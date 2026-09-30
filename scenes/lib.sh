@@ -45,7 +45,7 @@ viewer() {
 }
 
 record() {
-  asciinema rec --headless --overwrite --window-size "${COLS}x${ROWS}" --idle-time-limit 2 \
+  asciinema rec --headless --overwrite --output-format asciicast-v2 --window-size "${COLS}x${ROWS}" --idle-time-limit 2 \
     -c "tmux -L $SOCK -f /dev/null attach -t demo" "$CAST" >/dev/null &
   recorder=$!
   sleep 1
@@ -97,4 +97,21 @@ lsp_ready() {
   done
   echo "gopls did not answer" >&2
   return 1
+}
+
+# Off camera: round 1 reviewed and published, then Kai answers and pushes round 2.
+round1_published() {
+  review_ready
+  gr comment add --file internal/transfer/service.go --lines 32 --severity blocker \
+    "\`limits.Check\` runs before the transaction, so two concurrent transfers both pass it." >/dev/null
+  gr comment add --file internal/api/handler.go --lines 40 --severity major \
+    "\`int64(body.Amount * 100)\` truncates the float instead of rounding it." >/dev/null
+  gr comment add --file migrations/002_daily_limits.sql --lines 1 --severity major \
+    "\`NOT NULL\` without a default fails on a table that already has rows." >/dev/null
+  local s
+  for s in s1 s2 s3 s4 s5 s6 s7; do gr step goto "$s" >/dev/null; gr step next >/dev/null 2>&1 || true; done
+  gr prepare --verdict changes --decisions "Limits must hold under concurrent transfers." >/dev/null
+  gr export >/dev/null
+  gr mark-published >/dev/null
+  echo 2 >"$DEMO_GH/round"
 }

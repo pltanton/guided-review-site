@@ -1,1 +1,17 @@
-{"data":{"repository":{"pullRequest":{"reviewThreads":{"nodes":[]},"comments":{"nodes":[]}}}}}
+{"data":{"repository":{"pullRequest":{
+  "reviewThreads":{"nodes":[
+    {"id":"PRRT_race","isResolved":false,"path":"internal/transfer/service.go","line":34,"originalLine":32,"diffSide":"RIGHT",
+     "comments":{"totalCount":2,"nodes":[
+       {"databaseId":9101,"body":"**blocker** `limits.Check` runs before the transaction, so two concurrent transfers both pass it.","author":{"login":"sam"}},
+       {"databaseId":9104,"body":"Moved the check into the transaction; SpentToday now locks the account row with FOR UPDATE.","author":{"login":"kai"}}]}},
+    {"id":"PRRT_round","isResolved":false,"path":"internal/api/handler.go","line":41,"originalLine":40,"diffSide":"RIGHT",
+     "comments":{"totalCount":2,"nodes":[
+       {"databaseId":9102,"body":"**major** `int64(body.Amount * 100)` truncates the float instead of rounding it.","author":{"login":"sam"}},
+       {"databaseId":9105,"body":"Good catch, switched to math.Round.","author":{"login":"kai"}}]}},
+    {"id":"PRRT_migration","isResolved":false,"path":"migrations/002_daily_limits.sql","line":1,"originalLine":1,"diffSide":"RIGHT",
+     "comments":{"totalCount":2,"nodes":[
+       {"databaseId":9103,"body":"**major** `NOT NULL` without a default fails on a table that already has rows.","author":{"login":"sam"}},
+       {"databaseId":9106,"body":"The accounts table is small, the migration runs in under a second.","author":{"login":"kai"}}]}}
+  ]},
+  "comments":{"nodes":[]}
+}}}}
