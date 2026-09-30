@@ -14,9 +14,10 @@ function attach(figure, extra) {
   time.className = "time";
   seek.className = "seek";
   seek.append(document.createElement("i"));
-  figure.firstElementChild.prepend(button);
-  button.after(time);
-  figure.append(seek);
+  const caption = figure.firstElementChild;
+  caption.prepend(button);
+  caption.querySelector("span").after(time);
+  caption.append(seek);
 
   const state = { player, playing: false, held: false };
   let frame = 0;
@@ -52,6 +53,7 @@ function attach(figure, extra) {
     await player.seek(((e.clientX - box.left) / box.width) * (await player.getDuration()));
     draw();
   });
+  state.draw = draw;
   return state;
 }
 
@@ -94,19 +96,39 @@ if (!still)
   });
 
 const dialog = document.querySelector("dialog");
-const [caption, screen] = dialog.querySelector("figure").children;
+const [dialogCaption, dialogScreen] = dialog.querySelector("figure").children;
+const collapse = Object.assign(document.createElement("button"), { className: "act", textContent: "⤡", title: "Back (esc)" });
+collapse.addEventListener("click", () => dialog.close());
 let big;
+let scrubbing = false;
 dialog.addEventListener("click", (e) => e.target === dialog && dialog.close());
 dialog.addEventListener("close", () => {
   big.player.dispose();
   dialog.querySelectorAll(".pp, .time, .seek").forEach((el) => el.remove());
 });
-for (const figure of document.querySelectorAll(".zoom"))
-  figure.firstElementChild.addEventListener("click", (e) => {
-    if (e.target.closest("button")) return;
-    caption.textContent = figure.closest(".row").querySelector("h2").textContent;
-    screen.replaceChildren();
-    screen.dataset.cast = figure.querySelector("[data-cast]").dataset.cast;
+dialog.addEventListener(
+  "wheel",
+  async (e) => {
+    e.preventDefault();
+    if (scrubbing || !big) return;
+    scrubbing = true;
+    const { player } = big;
+    const [at, total] = await Promise.all([player.getCurrentTime(), player.getDuration()]);
+    await player.seek(Math.min(total, Math.max(0, at + e.deltaY / 100)));
+    big.draw();
+    scrubbing = false;
+  },
+  { passive: false },
+);
+for (const figure of document.querySelectorAll(".zoom")) {
+  const expand = Object.assign(document.createElement("button"), { className: "act", textContent: "⤢", title: "Larger" });
+  figure.firstElementChild.append(expand);
+  expand.addEventListener("click", () => {
+    dialogCaption.firstElementChild.textContent = `${figure.closest(".row").querySelector("h2").textContent} · scroll to scrub`;
+    dialogCaption.append(collapse);
+    dialogScreen.replaceChildren();
+    dialogScreen.dataset.cast = figure.querySelector("[data-cast]").dataset.cast;
     dialog.showModal();
-    big = attach(dialog.querySelector("figure"), { fit: "both", autoPlay: true, loop: true });
+    big = attach(dialog.querySelector("figure"), { autoPlay: true, loop: true });
   });
+}
