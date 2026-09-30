@@ -2,6 +2,12 @@ const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const options = { fit: "width", idleTimeLimit: 2, theme: "gr", poster: "npt:0:6", preload: true, controls: false };
 const inView = (e) => e.intersectionRatio >= 0.9 || e.intersectionRect.height >= 0.9 * e.rootBounds.height;
 const whenSeen = (el, on) => new IntersectionObserver(([e]) => on(inView(e)), { threshold: [0, 0.5, 0.9, 1] }).observe(el);
+document.querySelector(".theme").addEventListener("click", () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = dark ? "light" : "dark";
+  try { localStorage.theme = root.dataset.theme; } catch {}
+});
 const clock = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
 function attach(figure, extra) {
@@ -47,7 +53,6 @@ function attach(figure, extra) {
     state.playing ? player.pause() : player.play();
   };
   button.addEventListener("click", toggle);
-  screen.addEventListener("click", toggle);
   seek.addEventListener("click", async (e) => {
     const box = seek.getBoundingClientRect();
     await player.seek(((e.clientX - box.left) / box.width) * (await player.getDuration()));
