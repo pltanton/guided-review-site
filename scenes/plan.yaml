@@ -1,0 +1,156 @@
+summary: "Cap how much an account can send per day → a daily_limit column, a running total per day, a check before the debit"
+steps:
+  - id: s1
+    chapter: "Daily limits"
+    intro: |-
+      Before: an account could send its whole balance in any number of transfers.
+      After: each account has a daily_limit; a transfer over it gets 422.
+      POST /transfers → Service.Transfer → limits.Check → Debit/Credit/AddSpent
+    title: "The schema holds a limit per account and a total per day"
+    kind: migration
+    message: |-
+      s1/7 · migration 002 — daily_limit and transfer_totals
+      Adds the limit to accounts and a table of totals keyed by account and day.
+      ❓ ⚑1: NOT NULL without a default on a table that already has rows?
+    hunks: [{ file: migrations/002_daily_limits.sql }]
+    hotspots:
+      - cat: migration
+        line: 1
+        q: "NOT NULL without a default on a table with rows"
+        detail: |-
+          **Problem.** `ADD COLUMN daily_limit BIGINT NOT NULL` has no default, and every existing account row would get NULL.
+
+          **When it bites.** On the first deploy: Postgres refuses the ALTER on a non-empty `accounts`, the migration fails and the release stops.
+
+          **What to do.** Add `DEFAULT 0` (0 already means "no limit" in `internal/limits/limits.go:28`), or backfill in a separate step before setting NOT NULL.
+    annotations:
+      - file: migrations/002_daily_limits.sql
+        line: 3
+        to: 8
+        kind: note
+        text: >-
+          The totals are kept per calendar day rather than summed from transfers, so the
+          check is one indexed lookup. The day is CURRENT_DATE of the database session,
+          which makes the reset time depend on the server's timezone.
+        detail: |-
+          **Problem.** "Today" is decided by the database session timezone in both the read and the write.
+
+          **When it bites.** With the database in UTC, a customer in Tokyo gets a fresh limit at 9:00 local time.
+
+          **What to do.** Fine if the product agrees on UTC days; otherwise pass the day in from the service. See `internal/store/store.go:71`.
+  - id: s2
+    chapter: "Daily limits"
+    title: "The store reads today's total and adds to it in the transfer's transaction"
+    kind: persistence
+    message: |-
+      s2/7 · store — SpentToday and AddSpent
+      SpentToday reads the total and the limit outside any transaction; AddSpent upserts inside the transfer.
+    hunks: [{ file: internal/store/store.go, lines: 66-86 }]
+    annotations:
+      - file: internal/store/store.go
+        line: 81
+        to: 83
+        kind: note
+        text: >-
+          The upsert adds to the row atomically, so two concurrent transfers never lose
+          an increment. It does not stop them from both passing the check first; that
+          happens earlier, in the service.
+        detail: |-
+          **Problem.** None here: `ON CONFLICT … DO UPDATE SET spent = spent + $2` is atomic per row.
+
+          **When it bites.** The race is between the read in `internal/store/store.go:67` and this write, see step s4.
+
+          **What to do.** Nothing in this function.
+  - id: s3
+    chapter: "Daily limits"
+    title: "Check refuses a transfer that would go over the limit"
+    kind: logic
+    message: |-
+      s3/7 · limits.Checker — the rule itself
+      A limit of 0 means no limit; exactly reaching the limit is allowed. Table test covers both edges.
+    hunks:
+      - { file: internal/limits/limits.go }
+      - { file: internal/limits/limits_test.go }
+    depends_on: [s2]
+  - id: s4
+    chapter: "Daily limits"
+    title: "Transfer checks the limit, then debits"
+    kind: entry
+    message: |-
+      s4/7 · Service.Transfer — check, then the transaction
+      Validates, checks the limit, then debits, credits and adds to the total in one transaction.
+      ❓ ⚑32: two transfers at once — both pass the check?
+    hunks: [{ file: internal/transfer/service.go, lines: 6-47 }]
+    hotspots:
+      - cat: consistency
+        line: 32
+        q: "Two concurrent transfers both pass the check"
+        detail: |-
+          **Problem.** `limits.Check` reads the total before `InTx` opens, so the check and the debit are not atomic.
+
+          **When it bites.** Two requests for 600 against a limit of 1000 arrive together: both read 0, both pass, 1200 leaves the account.
+
+          **What to do.** Read the total inside the transaction with `FOR UPDATE` on the account row, see `internal/store/store.go:67`.
+    depends_on: [s3]
+  - id: s5
+    chapter: "Daily limits"
+    title: "The API takes amounts in euros and maps the new error to 422"
+    kind: contract
+    message: |-
+      s5/7 · POST /transfers — euros in, cents inside
+      The body now carries a float amount in euros; the handler converts it to cents.
+      ❓ ⚑40: 19.99 → 1998 cents?
+    hunks: [{ file: internal/api/handler.go }]
+    hotspots:
+      - cat: money
+        line: 40
+        q: "Float to cents truncates"
+        detail: |-
+          **Problem.** `int64(body.Amount * 100)` truncates, and most decimal amounts are not exact in float64.
+
+          **When it bites.** `19.99 * 100` is `1998.9999999999998`, so the customer is charged 19.98 and the books drift a cent at a time.
+
+          **What to do.** `math.Round(body.Amount * 100)`, or take the amount as a string and parse it as decimal.
+    annotations:
+      - file: internal/api/handler.go
+        line: 50
+        to: 51
+        kind: note
+        text: >-
+          Every other error now goes back as 400 with its text, database errors
+          included. Before this change they were a plain 500.
+        detail: |-
+          **Problem.** `err.Error()` of a failed query reaches the client, with table names and SQL state.
+
+          **When it bites.** A lock timeout returns "debit acc-1: pq: canceling statement due to lock timeout" to a mobile app as a 400.
+
+          **What to do.** Map validation errors to 400 explicitly and keep 500 with a generic text for the rest.
+    depends_on: [s4]
+  - id: s6
+    chapter: "Retries"
+    intro: |-
+      Before: a serialization failure surfaced to the client as 500.
+      After: the whole transaction is retried up to LEDGER_TRANSFER_RETRIES times.
+    title: "Only serialization failures and deadlocks are retried"
+    kind: logic
+    message: |-
+      s6/7 · retry — the whole transaction, with backoff
+      Retries on SQLSTATE 40001 and 40P01 only; the config default is 3.
+    hunks:
+      - { file: internal/transfer/service.go, lines: 50-64 }
+      - { file: internal/store/store.go, lines: 87-101 }
+      - { file: internal/config/config.go }
+  - id: s7
+    chapter: "Cleanup"
+    intro: |-
+      Validation moves from the handler into the service; the legacy fee code goes,
+      fees now live in the billing service.
+    title: "Validation moved, legacy fees removed, wiring updated"
+    kind: config
+    message: |-
+      s7/7 · moved validation, removed fees.go, main wiring
+      Validate is the old validateTransfer moved into transfer; fees.go has no callers left.
+    hunks:
+      - { file: internal/transfer/validate.go }
+      - { file: internal/legacy/fees.go }
+      - { file: cmd/ledger/main.go }

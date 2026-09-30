@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Stands in for gh: answers the calls gr makes from $DEMO_GH, fails on anything else.
+set -euo pipefail
+round=$(cat "$DEMO_GH/round")
+[[ ${1:-} == api && ${2:-} == --hostname ]] || { echo "fake gh: unexpected: $*" >&2; exit 1; }
+case "${4:-}" in
+  repos/demo/ledger/pulls/42) cat "$DEMO_GH/pr-$round.json" ;;
+  graphql) cat "$DEMO_GH/threads-$round.json" ;;
+  user) echo '{"login":"sam"}' ;;
+  *) echo "fake gh: unexpected: $*" >&2; exit 1 ;;
+esac
