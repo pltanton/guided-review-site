@@ -10,7 +10,7 @@ PR=https://github.com/demo/ledger/pull/42
 export HOME="$WORK/home" DEMO_GH="$WORK/gh"
 export PATH="$WORK/bin:$PATH"
 export XDG_CONFIG_HOME="$HOME/.config" XDG_CACHE_HOME="$HOME/.cache"
-export COLORTERM=truecolor LANG=${LANG:-en_US.UTF-8} TERM=${TERM:-xterm-256color}
+export COLORTERM=truecolor TERM_PROGRAM=tmux LANG=${LANG:-en_US.UTF-8} TERM=${TERM:-xterm-256color}
 mkdir -p "$HOME"
 cd "$WORK/ledger"
 
@@ -38,7 +38,7 @@ review_ready() {
 
 viewer() {
   t new-session -d -s demo -x "$COLS" -y "$ROWS" -c "$PWD" \
-    -e HOME -e PATH -e DEMO_GH -e XDG_CONFIG_HOME -e XDG_CACHE_HOME -e COLORTERM -e LANG \
+    -e HOME -e PATH -e DEMO_GH -e XDG_CONFIG_HOME -e XDG_CACHE_HOME -e COLORTERM -e TERM_PROGRAM -e LANG \
     "gr view; sleep 3600"
   t set -g status off
   t set -g escape-time 0
