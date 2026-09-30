@@ -32,28 +32,32 @@
 
 <main id="top">
   <section class="hero wrap">
-    <div class="hero-text">
-      <p class="eyebrow">Claude Code or Codex · GitLab or GitHub · tmux</p>
-      <h1>Keep the human review. <span class="soft">Lose the grind.</span></h1>
-      <p class="lede">
-        Agents write code faster than people can review it. Here the agent reads the merge
-        request first, cuts it into small steps in a sensible order and walks you through
-        them. You decide what is wrong; it writes the comments and posts them when you say so.
-      </p>
-      <div class="cta">
-        <a class="button primary" href="#install">Install</a>
-        <a class="button" href="https://github.com/pltanton/guided-review">GitHub</a>
+    <div class="hero-head">
+      <div>
+        <p class="eyebrow">Claude Code or Codex · GitLab or GitHub · tmux</p>
+        <h1>Keep the human review. <span class="soft">Lose the grind.</span></h1>
       </div>
-      <ul class="facts">
-        <li><b>Chapters by behaviour</b>, not by file</li>
-        <li><b>⚑ hotspots</b> where a mistake is expensive</li>
-        <li><b>Every step</b> needs your “next” or a reason to skip</li>
-      </ul>
+      <div class="hero-side">
+        <p class="lede">
+          Agents write code faster than people can review it. Here the agent reads the merge
+          request first, cuts it into small steps in a sensible order and walks you through
+          them. You decide what is wrong; it writes the comments and posts them when you say so.
+        </p>
+        <div class="cta">
+          <a class="button primary" href="#install">Install</a>
+          <a class="button" href="https://github.com/pltanton/guided-review">GitHub</a>
+        </div>
+      </div>
     </div>
     <figure class="term hero-term">
       <div class="term-bar"><i></i><i></i><i></i><span>gr view · PR #42 Daily transfer limits per account</span></div>
       <div class="player" data-cast="casts/01-plan.cast"></div>
     </figure>
+    <ul class="facts">
+      <li><b>Chapters by behaviour</b>, not by file: spec, contracts, entry points, then the code they call.</li>
+      <li><b>⚑ hotspots</b> where a mistake is expensive — money, security, consistency, migrations.</li>
+      <li><b>Every step</b> needs your “next” or a reason to skip. Nothing is posted without your yes.</li>
+    </ul>
   </section>
 
   <section id="features" class="rows wrap">
@@ -64,7 +68,7 @@
         <p>Point at a line and write what bothers you, the way you would say it to a colleague. The agent turns it into a review comment with a severity and, when the fix is obvious, a suggestion. When it needs a decision, it offers answers you pick with one key.</p>
       </div>
       <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>c on a line · alt+1 to answer</span></div>
+        <div class="term-bar"><i></i><i></i><i></i><span>c on a line · alt+1 to answer</span><button class="expand" type="button" aria-label="Open larger">⤢ larger</button></div>
         <div class="player" data-cast="casts/02-conversation.cast"></div>
       </figure>
     </article>
@@ -75,7 +79,7 @@
         <p>A step counts as reviewed only when you move past it or skip it with a reason. The viewer tracks which changed lines you actually scrolled past and reminds you once about the rest, or about a hotspot nobody discussed.</p>
       </div>
       <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>&gt; next · ? ask · c comment</span></div>
+        <div class="term-bar"><i></i><i></i><i></i><span>&gt; next · ? ask · c comment</span><button class="expand" type="button" aria-label="Open larger">⤢ larger</button></div>
         <div class="player" data-cast="casts/03-no-rubber-stamp.cast"></div>
       </figure>
     </article>
@@ -86,7 +90,7 @@
         <p>After the author pushes, you see only what changed since your last round. Your open threads come first, with the author's replies. The agent checks each reply against the new code and suggests resolve or keep open. You decide.</p>
       </div>
       <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>R replies · a take the agent's suggestion</span></div>
+        <div class="term-bar"><i></i><i></i><i></i><span>R replies · a take the agent's suggestion</span><button class="expand" type="button" aria-label="Open larger">⤢ larger</button></div>
         <div class="player" data-cast="casts/04-next-round.cast"></div>
       </figure>
     </article>
@@ -97,7 +101,7 @@
         <p>At the end you see every inline comment and the summary exactly as they will be posted. Edit, delete, change a severity. Only after your yes does the agent publish: GitLab draft notes in one batch, or one GitHub review.</p>
       </div>
       <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>P finish · s severity · E edit · DD delete</span></div>
+        <div class="term-bar"><i></i><i></i><i></i><span>P finish · s severity · E edit · DD delete</span><button class="expand" type="button" aria-label="Open larger">⤢ larger</button></div>
         <div class="player" data-cast="casts/05-finish.cast"></div>
       </figure>
     </article>
@@ -140,8 +144,14 @@
         </button>
       </div>
       <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span data-carousel-bar>gr view</span></div>
-        <div class="player" data-carousel-player></div>
+        <div class="term-bar"><i></i><i></i><i></i><span data-carousel-bar>gr view</span>
+          <div class="pager">
+            <button type="button" data-prev aria-label="Previous">‹</button>
+            <span data-count>1 / 3</span>
+            <button type="button" data-next aria-label="Next">›</button>
+          </div>
+        </div>
+        <div class="stack" data-carousel-stack></div>
       </figure>
     </div>
   </section>
@@ -177,6 +187,15 @@ claude plugin install guided-review@guided-review</pre>
     </div>
   </section>
 </main>
+
+<dialog class="lightbox" data-lightbox>
+  <figure class="term">
+    <div class="term-bar"><i></i><i></i><i></i><span data-lightbox-bar></span>
+      <button class="expand" type="button" data-close aria-label="Close">✕ close</button>
+    </div>
+    <div class="player" data-lightbox-player></div>
+  </figure>
+</dialog>
 
 <footer class="foot">
   <div class="wrap foot-row">

@@ -3,7 +3,7 @@ set -euo pipefail
 
 : "${WORK:?}" "${CAST:?}"
 SCENES=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-COLS=150 ROWS=40
+COLS=180 ROWS=46
 SOCK="grdemo-$$"
 PR=https://github.com/demo/ledger/pull/42
 

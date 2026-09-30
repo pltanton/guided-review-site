@@ -28,18 +28,28 @@ function createLooping() {
 
 function createCarousel(root) {
   const tabs = [...root.querySelectorAll(".tab")];
-  const mount = root.querySelector("[data-carousel-player]");
+  const stack = root.querySelector("[data-carousel-stack]");
   const bar = root.querySelector("[data-carousel-bar]");
+  const count = root.querySelector("[data-count]");
   let current = 0;
-  let player = null;
   let visible = false;
   let frame = 0;
 
-  const progress = () => {
+  const slides = tabs.map((tab, i) => {
+    const layer = document.createElement("div");
+    layer.className = "layer";
+    stack.append(layer);
+    const player = AsciinemaPlayer.create(tab.dataset.cast, layer, playerOptions);
+    player.addEventListener("ended", () => {
+      if (i === current && visible) show(current + 1, true);
+    });
+    return { layer, player, fill: tab.querySelector(".tab-progress i") };
+  });
+
+  const track = () => {
     cancelAnimationFrame(frame);
-    const fill = tabs[current].querySelector(".tab-progress i");
+    const { player, fill } = slides[current];
     const tick = async () => {
-      if (!player) return;
       const [at, total] = await Promise.all([player.getCurrentTime(), player.getDuration()]);
       if (total) fill.style.width = `${Math.min(100, (at / total) * 100)}%`;
       frame = requestAnimationFrame(tick);
@@ -47,42 +57,76 @@ function createCarousel(root) {
     tick();
   };
 
-  const show = (i, play) => {
-    current = (i + tabs.length) % tabs.length;
-    tabs.forEach((t, n) => {
-      t.setAttribute("aria-selected", String(n === current));
-      t.querySelector(".tab-progress i").style.width = "0";
+  const show = async (i, play) => {
+    const next = (i + tabs.length) % tabs.length;
+    if (next !== current) slides[current].player.pause();
+    current = next;
+    tabs.forEach((t, n) => t.setAttribute("aria-selected", String(n === next)));
+    slides.forEach((s, n) => {
+      s.fill.style.width = "0";
+      s.layer.classList.toggle("on", n === next);
     });
-    bar.textContent = tabs[current].querySelector(".tab-title").textContent;
-    cancelAnimationFrame(frame);
-    player?.dispose();
-    mount.replaceChildren();
-    player = AsciinemaPlayer.create(tabs[current].dataset.cast, mount, {
-      ...playerOptions,
-      autoPlay: play,
-    });
-    player.addEventListener("play", progress);
-    player.addEventListener("pause", () => cancelAnimationFrame(frame));
-    player.addEventListener("ended", () => {
-      cancelAnimationFrame(frame);
-      if (visible) show(current + 1, true);
-    });
+    bar.textContent = tabs[next].querySelector(".tab-title").textContent;
+    count.textContent = `${next + 1} / ${tabs.length}`;
+    await slides[next].player.seek(0);
+    if (play) {
+      slides[next].player.play();
+      track();
+    }
   };
 
   tabs.forEach((tab, i) => tab.addEventListener("click", () => show(i, !reduceMotion)));
-  show(0, false);
+  root.querySelector("[data-prev]").addEventListener("click", () => show(current - 1, !reduceMotion));
+  root.querySelector("[data-next]").addEventListener("click", () => show(current + 1, !reduceMotion));
+  slides[0].layer.classList.add("on");
   if (reduceMotion) return;
-  mount.onVisible = (seen) => {
+  stack.onVisible = (seen) => {
     visible = seen;
-    if (seen) player.play();
-    else player.pause();
+    if (seen) {
+      slides[current].player.play();
+      track();
+    } else {
+      slides[current].player.pause();
+      cancelAnimationFrame(frame);
+    }
   };
-  visibility.observe(mount);
+  visibility.observe(stack);
+}
+
+function createLightbox() {
+  const dialog = document.querySelector("[data-lightbox]");
+  const mount = dialog.querySelector("[data-lightbox-player]");
+  const bar = dialog.querySelector("[data-lightbox-bar]");
+  let player = null;
+
+  const close = () => dialog.close();
+  dialog.addEventListener("close", () => {
+    player?.dispose();
+    player = null;
+    mount.replaceChildren();
+  });
+  dialog.addEventListener("click", (e) => e.target === dialog && close());
+  dialog.querySelector("[data-close]").addEventListener("click", close);
+
+  for (const figure of document.querySelectorAll(".row .term")) {
+    const cast = figure.querySelector(".player").dataset.cast;
+    figure.addEventListener("click", () => {
+      bar.textContent = figure.closest(".row").querySelector("h2").textContent;
+      dialog.showModal();
+      player = AsciinemaPlayer.create(cast, mount, {
+        ...playerOptions,
+        autoPlay: true,
+        loop: true,
+        controls: true,
+      });
+    });
+  }
 }
 
 document.fonts.load("14px 'JetBrains Mono'").finally(() => {
   createLooping();
   document.querySelectorAll("[data-carousel]").forEach(createCarousel);
+  createLightbox();
 });
 
 for (const button of document.querySelectorAll("[data-copy]")) {
