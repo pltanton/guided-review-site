@@ -10,6 +10,7 @@ PR=https://github.com/demo/ledger/pull/42
 export HOME="$WORK/home" DEMO_GH="$WORK/gh"
 export PATH="$WORK/bin:$PATH"
 export XDG_CONFIG_HOME="$HOME/.config" XDG_CACHE_HOME="$HOME/.cache"
+unset CI
 export COLORTERM=truecolor TERM_PROGRAM=tmux LANG=${LANG:-en_US.UTF-8} TERM=${TERM:-xterm-256color}
 mkdir -p "$HOME"
 cd "$WORK/ledger"
