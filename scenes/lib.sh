@@ -50,6 +50,8 @@ record() {
     -c "tmux -u -L $SOCK -f /dev/null attach -t demo" "$CAST" >/dev/null &
   recorder=$!
   sleep 1
+  { tmux -V; env | grep -E '^(TERM|COLORTERM|TERM_PROGRAM|NO_COLOR|CLICOLOR|CI)=' || true
+    t display -p -t demo 'client #{client_termname} [#{client_termfeatures}] pane-env:' ; t show-environment -t demo | grep -E '^(TERM|COLORTERM|TERM_PROGRAM)'; } >"$WORK/diag" 2>&1 || true
 }
 
 stop() {
