@@ -114,14 +114,15 @@ code {
 .nav nav a:hover { color: var(--ink); }
 .nav nav a.gh { color: var(--ink); font-weight: 500; }
 
-/* hero */
-.hero { padding: 80px 0 40px; }
-.hero-head {
+/* hero: fills the first screen */
+.hero {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: 32px 72px;
-  align-items: end;
-  margin-bottom: 48px;
+  grid-template-columns: minmax(320px, 440px) minmax(0, 1fr);
+  gap: 64px;
+  align-items: center;
+  min-height: calc(100svh - 60px);
+  padding: 48px 0 88px;
 }
 .eyebrow {
   font: 500 12.5px/1.4 var(--mono);
@@ -131,19 +132,48 @@ code {
 }
 h1 {
   font-weight: 700;
-  font-size: clamp(40px, 5.4vw, 76px);
+  font-size: clamp(40px, 3.9vw, 58px);
   line-height: .98;
   letter-spacing: -.045em;
   margin: 0;
 }
 h1 .soft { color: var(--muted); display: block; margin-top: .06em; }
+h1 em {
+  font: italic 400 1.14em/1 "Instrument Serif", Georgia, serif;
+  letter-spacing: -.01em;
+  color: var(--accent);
+}
 .lede {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.6;
   color: var(--ink-soft);
-  margin: 0;
+  margin: 24px 0 0;
 }
 .cta { display: flex; gap: 10px; flex-wrap: wrap; margin: 28px 0 0; }
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 12.5px/1 var(--mono);
+  color: var(--muted);
+  text-decoration: none;
+}
+.scroll-cue i {
+  font-style: normal;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  animation: nudge 2.4s ease-in-out infinite;
+}
+.scroll-cue:hover { color: var(--ink); }
+@keyframes nudge { 0%, 60%, 100% { transform: none; } 30% { transform: translateY(4px); } }
 .button {
   display: inline-flex;
   align-items: center;
@@ -161,23 +191,23 @@ h1 .soft { color: var(--muted); display: block; margin-top: .06em; }
 .button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .facts {
   list-style: none;
-  margin: 40px 0 0;
-  padding: 0;
+  margin: 32px 0 0;
+  padding: 18px 0 0;
+  border-top: 1px solid var(--line);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-  font-size: 15px;
+  gap: 8px;
+  font-size: 14.5px;
   color: var(--muted);
 }
 .facts b { color: var(--ink); font-weight: 600; }
-.facts li { position: relative; padding-top: 18px; border-top: 1px solid var(--line); }
+.facts li { position: relative; padding-left: 18px; }
 .facts li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: -2px;
-  width: 28px;
-  height: 3px;
+  top: .62em;
+  width: 6px;
+  height: 6px;
   border-radius: 2px;
   background: var(--accent);
 }
@@ -222,6 +252,8 @@ h1 .soft { color: var(--muted); display: block; margin-top: .06em; }
   padding: 64px 0;
 }
 .row + .row { border-top: 1px solid var(--line); }
+.row > .term { width: 100%; max-width: 920px; justify-self: end; }
+.row:nth-child(even) > .term { justify-self: start; }
 .row:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(260px, 360px); }
 .row:nth-child(even) .row-text { order: 2; }
 .num { display: block; font: 500 13px/1 var(--mono); color: var(--accent); margin-bottom: 18px; }
@@ -412,11 +444,11 @@ kbd {
 }
 
 @media (max-width: 980px) {
-  .hero-head, .row, .row:nth-child(even), .carousel { grid-template-columns: 1fr; gap: 28px; }
+  .hero, .row, .row:nth-child(even), .carousel { grid-template-columns: 1fr; gap: 28px; }
+  .hero { min-height: 0; }
+  .scroll-cue { display: none; }
   .row:nth-child(even) .row-text { order: 0; }
-  .facts { grid-template-columns: 1fr; gap: 20px; }
-  .hero { padding: 48px 0 32px; }
-  .hero-head { margin-bottom: 32px; }
+  .hero { padding: 40px 0 48px; }
   .row { padding: 56px 0; }
   .install-grid { grid-template-columns: 1fr; }
   .foot-row { flex-direction: column; }
@@ -433,4 +465,5 @@ kbd {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .button { transition: none; }
+  .scroll-cue i { animation: none; }
 }

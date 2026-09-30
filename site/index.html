@@ -12,7 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314161f'/%3E%3Cpath d='M10 7v18M10 8h11l-3 4 3 4H10' stroke='%23FCD34D' stroke-width='2.4' fill='none' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.css">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -32,32 +32,31 @@
 
 <main id="top">
   <section class="hero wrap">
-    <div class="hero-head">
-      <div>
-        <p class="eyebrow">Claude Code or Codex · GitLab or GitHub · tmux</p>
-        <h1>Keep the human review. <span class="soft">Lose the grind.</span></h1>
+    <div class="hero-text">
+      <p class="eyebrow">Claude Code or Codex · GitLab or GitHub · tmux</p>
+      <h1>Keep the human review. <span class="soft">Lose the <em>grind.</em></span></h1>
+      <p class="lede">
+        Agents write code faster than people can review it. Here the agent reads the merge
+        request first, cuts it into small steps in a sensible order and walks you through
+        them. You decide what is wrong; it writes the comments and posts them when you say so.
+      </p>
+      <div class="cta">
+        <a class="button primary" href="#install">Install</a>
+        <a class="button" href="https://github.com/pltanton/guided-review">GitHub</a>
       </div>
-      <div class="hero-side">
-        <p class="lede">
-          Agents write code faster than people can review it. Here the agent reads the merge
-          request first, cuts it into small steps in a sensible order and walks you through
-          them. You decide what is wrong; it writes the comments and posts them when you say so.
-        </p>
-        <div class="cta">
-          <a class="button primary" href="#install">Install</a>
-          <a class="button" href="https://github.com/pltanton/guided-review">GitHub</a>
-        </div>
-      </div>
+      <ul class="facts">
+        <li><b>Chapters by behaviour</b>, not by file</li>
+        <li><b>⚑ hotspots</b> where a mistake is expensive</li>
+        <li><b>Every step</b> needs your “next” or a reason to skip</li>
+      </ul>
     </div>
     <figure class="term hero-term">
       <div class="term-bar"><i></i><i></i><i></i><span>gr view · PR #42 Daily transfer limits per account</span></div>
       <div class="player" data-cast="casts/01-plan.cast"></div>
     </figure>
-    <ul class="facts">
-      <li><b>Chapters by behaviour</b>, not by file: spec, contracts, entry points, then the code they call.</li>
-      <li><b>⚑ hotspots</b> where a mistake is expensive — money, security, consistency, migrations.</li>
-      <li><b>Every step</b> needs your “next” or a reason to skip. Nothing is posted without your yes.</li>
-    </ul>
+    <a class="scroll-cue" href="#features" aria-label="Features">
+      <span>See it work</span><i aria-hidden="true">↓</i>
+    </a>
   </section>
 
   <section id="features" class="rows wrap">
