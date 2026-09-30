@@ -1,0 +1,87 @@
+name: site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "guided-review ref to record (default: latest tag, else main)"
+        required: false
+  repository_dispatch:
+    types: [gr-release]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      LANG: C.UTF-8
+      TERM: xterm-256color
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pick the guided-review ref
+        id: ref
+        env:
+          WANTED: ${{ github.event.client_payload.ref || inputs.ref }}
+        run: |
+          ref=$WANTED
+          if [[ -z $ref ]]; then
+            ref=$(git ls-remote --tags --sort=-v:refname https://github.com/pltanton/guided-review 'v*' \
+              | grep -v '\^{}' | head -1 | sed 's|.*refs/tags/||')
+          fi
+          echo "ref=${ref:-main}" >>"$GITHUB_OUTPUT"
+          echo "recording guided-review ${ref:-main}"
+
+      - uses: actions/checkout@v4
+        with:
+          repository: pltanton/guided-review
+          ref: ${{ steps.ref.outputs.ref }}
+          path: guided-review
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: guided-review/go.mod
+          cache-dependency-path: guided-review/go.sum
+
+      - name: Tools
+        run: |
+          sudo apt-get update -q && sudo apt-get install -yq tmux
+          go install golang.org/x/tools/gopls@latest
+          (cd guided-review && go build -o "$RUNNER_TEMP/bin/gr" ./cmd/gr)
+          curl -fsSL -o "$RUNNER_TEMP/bin/asciinema" \
+            https://github.com/asciinema/asciinema/releases/download/v3.2.1/asciinema-x86_64-unknown-linux-gnu
+          chmod +x "$RUNNER_TEMP/bin/asciinema"
+          echo "$RUNNER_TEMP/bin" >>"$GITHUB_PATH"
+          echo "$(go env GOPATH)/bin" >>"$GITHUB_PATH"
+
+      - name: Record
+        run: ./record.sh
+
+      - name: Assemble
+        run: |
+          rm -rf site/casts
+          cp -R casts site/casts
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -3,7 +3,7 @@
 set -euo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 out=$(mkdir -p "$1" && cd "$1" && pwd)
-rm -rf "$out/ledger" "$out/origin.git" "$out/gh" "$out/bin"
+rm -rf "${out:?}/ledger" "$out/origin.git" "$out/gh" "$out/bin"
 mkdir -p "$out/ledger" "$out/gh" "$out/bin"
 cp "$here/gh/gh" "$out/bin/gh"
 

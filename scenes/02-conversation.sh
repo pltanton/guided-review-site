@@ -38,5 +38,5 @@ say "recorded: major, handler.go:50–51. Two comments on this step."
 pause 1.5
 key C-d
 pause 3.5
-snap done
+snap final
 stop 1

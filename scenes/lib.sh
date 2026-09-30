@@ -10,11 +10,11 @@ PR=https://github.com/demo/ledger/pull/42
 export HOME="$WORK/home" DEMO_GH="$WORK/gh"
 export PATH="$WORK/bin:$PATH"
 export XDG_CONFIG_HOME="$HOME/.config" XDG_CACHE_HOME="$HOME/.cache"
-export COLORTERM=truecolor LANG=en_US.UTF-8
+export COLORTERM=truecolor LANG=${LANG:-en_US.UTF-8} TERM=${TERM:-xterm-256color}
 mkdir -p "$HOME"
 cd "$WORK/ledger"
 
-t() { tmux -L "$SOCK" -f /dev/null "$@"; }
+t() { tmux -u -L "$SOCK" -f /dev/null "$@"; }
 listener=""
 recorder=""
 (sleep 240; echo "scene timed out" >&2; kill -TERM $$) </dev/null >/dev/null 2>&1 &
@@ -46,7 +46,7 @@ viewer() {
 
 record() {
   asciinema rec --headless --overwrite --output-format asciicast-v2 --window-size "${COLS}x${ROWS}" --idle-time-limit 2 \
-    -c "tmux -L $SOCK -f /dev/null attach -t demo" "$CAST" >/dev/null &
+    -c "tmux -u -L $SOCK -f /dev/null attach -t demo" "$CAST" >/dev/null &
   recorder=$!
   sleep 1
 }

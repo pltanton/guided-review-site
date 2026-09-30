@@ -18,5 +18,7 @@ for name in "${scenes[@]}"; do
   ln -s "$gr" "$work/bin/gr"
   echo "recording $name"
   WORK="$work" CAST="$out/$name.cast" bash "$here/scenes/$name.sh"
+  # The page frames casts in the viewer's dark palette; #A78BFA is its dark accent.
+  grep -q '167;139;250' "$out/$name.cast" || { echo "$name: not recorded in the dark palette" >&2; exit 1; }
   rm -rf "$work" /tmp/guided-review/demo-ledger
 done
