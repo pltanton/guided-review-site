@@ -1,16 +1,35 @@
 const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const options = { fit: "width", idleTimeLimit: 2, theme: "gr", poster: "npt:0:6", preload: true, controls: false };
 const mount = (el, extra) => AsciinemaPlayer.create(el.dataset.cast, el, { ...options, ...extra });
-const whenSeen = (el, on) => new IntersectionObserver(([e]) => on(e.isIntersecting), { threshold: 0.4 }).observe(el);
+const inView = (e) => e.intersectionRatio >= 0.9 || e.intersectionRect.height >= 0.9 * e.rootBounds.height;
+const whenSeen = (el, on) => new IntersectionObserver(([e]) => on(inView(e)), { threshold: [0, 0.5, 0.9, 1] }).observe(el);
+
+const clickToggles = (el, player) => {
+  let playing = false;
+  let held = false;
+  player.addEventListener("play", () => (playing = true));
+  player.addEventListener("pause", () => (playing = false));
+  player.addEventListener("ended", () => (playing = false));
+  el.addEventListener("click", () => {
+    held = playing;
+    playing ? player.pause() : player.play();
+  });
+  return () => held;
+};
 
 for (const el of document.querySelectorAll(".row [data-cast], .hero [data-cast]")) {
   const player = mount(el, { loop: true });
-  if (!still) whenSeen(el, (seen) => (seen ? player.play() : player.pause()));
+  const held = clickToggles(el, player);
+  if (!still) whenSeen(el, (seen) => (seen && !held() ? player.play() : player.pause()));
 }
 
 const deep = document.querySelector(".deep");
 const radios = [...deep.querySelectorAll("input")];
-const slides = [...deep.querySelectorAll(".slides [data-cast]")].map((el) => mount(el));
+const slides = [...deep.querySelectorAll(".slides [data-cast]")].map((el) => {
+  const player = mount(el);
+  clickToggles(el, player);
+  return player;
+});
 let seen = false;
 const current = () => radios.findIndex((r) => r.checked);
 const play = async () => {
@@ -40,7 +59,7 @@ const dialog = document.querySelector("dialog");
 let big;
 dialog.addEventListener("click", (e) => e.target === dialog && dialog.close());
 dialog.addEventListener("close", () => big.dispose());
-for (const figure of document.querySelectorAll(".zoom")) figure.addEventListener("click", () => {
+for (const figure of document.querySelectorAll(".zoom")) figure.firstElementChild.addEventListener("click", () => {
   const [caption, screen] = dialog.querySelector("figure").children;
   caption.textContent = figure.closest(".row").querySelector("h2").textContent;
   screen.replaceChildren();
