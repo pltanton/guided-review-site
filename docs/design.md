@@ -61,19 +61,25 @@ the skill does, so the viewer behaves as in a real run. Pauses are fixed in the 
 
 ## Scenes
 
-Each 30–60 s, 140×40, one `.cast` each:
+150×40, so the viewer puts the chat in its side panel; one `.cast` each. Hero and rows,
+text left and recording right:
 
 1. **Plan** — chapters and steps appear, the first step opens with the agent's message and a ⚑.
-2. **Conversation** — select lines, write a remark in plain words, it becomes a comment with a severity.
-3. **Reading the diff** — moved code, a folded deletion, FLOW and go-to-definition (gopls).
-4. **No rubber stamp** — the reminder about unseen lines and an undiscussed hotspot.
-5. **Next round** — threads with the author's replies, resolve or keep open.
-6. **Finish** — the publish screen: edit a comment, change severity, verdict.
+2. **Conversation** — a remark in plain words becomes a comment with a severity; one-key answers.
+3. **No rubber stamp** — the reminder about unseen lines and an undiscussed hotspot, a question, a blocker.
+4. **Next round** — threads with the author's replies, resolve or keep open.
+5. **Finish** — the publish screen: severity, edit, hand to the agent.
+
+"Under the hood" carousel, advancing when a recording ends:
+
+6. **Details** — `i` on a hotspot, the code it mentions, `1` opens it; `?` explains a line.
+7. **LSP** — FLOW, hover, definition, callers, peeking into a caller.
+8. **Reading the diff** — moved code, a folded deletion, split view.
 
 ## Recording
 
 `record.sh` starts a tmux server on a private socket with a fixed size and no status
-line, and runs `asciinema rec --headless --window-size 140x40 -c "tmux attach"` while the
+line, and runs `asciinema rec --headless --window-size 150x40 -c "tmux attach"` while the
 scene script drives it. Checked on macOS without a TTY: headless recording of a
 send-keys-driven TUI works. Needs `gr`, `tmux`, `asciinema` 3.x, `gopls`, `git`, `go`.
 

@@ -23,6 +23,7 @@
     <a class="brand" href="#top"><span class="flag" aria-hidden="true">⚑</span> guided-review</a>
     <nav>
       <a href="#features">Features</a>
+      <a href="#deep">Under the hood</a>
       <a href="#install">Install</a>
       <a class="gh" href="https://github.com/pltanton/guided-review">GitHub</a>
     </nav>
@@ -31,128 +32,118 @@
 
 <main id="top">
   <section class="hero wrap">
-    <p class="eyebrow">Claude Code or Codex · GitLab or GitHub · tmux</p>
-    <h1>Keep the human review.<br><span class="soft">Lose the grind.</span></h1>
-    <p class="lede">
-      Agents write code faster than people can review it. guided-review has the agent read
-      the merge request first, cut it into small steps in an order that makes sense and walk
-      you through them in a terminal viewer. You decide what is wrong. It writes the comments
-      and posts them when you say so.
-    </p>
-    <div class="cta">
-      <a class="button primary" href="#install">Install</a>
-      <a class="button" href="https://github.com/pltanton/guided-review">Source on GitHub</a>
+    <div class="hero-text">
+      <p class="eyebrow">Claude Code or Codex · GitLab or GitHub · tmux</p>
+      <h1>Keep the human review. <span class="soft">Lose the grind.</span></h1>
+      <p class="lede">
+        Agents write code faster than people can review it. Here the agent reads the merge
+        request first, cuts it into small steps in a sensible order and walks you through
+        them. You decide what is wrong; it writes the comments and posts them when you say so.
+      </p>
+      <div class="cta">
+        <a class="button primary" href="#install">Install</a>
+        <a class="button" href="https://github.com/pltanton/guided-review">GitHub</a>
+      </div>
+      <ul class="facts">
+        <li><b>Chapters by behaviour</b>, not by file</li>
+        <li><b>⚑ hotspots</b> where a mistake is expensive</li>
+        <li><b>Every step</b> needs your “next” or a reason to skip</li>
+      </ul>
     </div>
     <figure class="term hero-term">
       <div class="term-bar"><i></i><i></i><i></i><span>gr view · PR #42 Daily transfer limits per account</span></div>
-      <div class="player" data-cast="casts/01-plan.cast" data-autoplay></div>
-      <figcaption>
-        The plan: chapters by behaviour, not by file. ⚑ marks the places where a mistake is
-        expensive, and every note has a longer explanation one key away.
-      </figcaption>
+      <div class="player" data-cast="casts/01-plan.cast"></div>
     </figure>
   </section>
 
-  <section class="principles wrap" aria-label="Principles">
-    <div>
-      <h3>It does not review for you</h3>
-      <p>Every step needs your “next” or a skip with a reason. The judgement stays yours.</p>
-    </div>
-    <div>
-      <h3>Small steps, sensible order</h3>
-      <p>Spec, contracts, then each entry point and the code it calls, tests right after. About 300 changed lines a step.</p>
-    </div>
-    <div>
-      <h3>Nothing leaves without you</h3>
-      <p>gr never writes to the merge request. You see the whole result before the agent posts it.</p>
-    </div>
-  </section>
-
-  <section id="features" class="features wrap">
-
-    <article class="feature">
-      <header>
+  <section id="features" class="rows wrap">
+    <article class="row">
+      <div class="row-text">
         <span class="num">01</span>
         <h2>Say it in your own words</h2>
-        <p>
-          Point at a line and write what bothers you, the way you would say it to a colleague.
-          The agent turns it into a review comment with a severity and, when the fix is
-          obvious, a suggestion. When it needs a decision, it offers answers you pick with
-          one key.
-        </p>
-      </header>
+        <p>Point at a line and write what bothers you, the way you would say it to a colleague. The agent turns it into a review comment with a severity and, when the fix is obvious, a suggestion. When it needs a decision, it offers answers you pick with one key.</p>
+      </div>
       <figure class="term">
         <div class="term-bar"><i></i><i></i><i></i><span>c on a line · alt+1 to answer</span></div>
         <div class="player" data-cast="casts/02-conversation.cast"></div>
       </figure>
     </article>
-
-    <article class="feature">
-      <header>
+    <article class="row">
+      <div class="row-text">
         <span class="num">02</span>
-        <h2>A diff that reads like code</h2>
-        <p>
-          Moved code is marked as moved instead of shown twice. Large deletions fold away.
-          Only the words that changed inside a line are coloured. With a language server you
-          jump to definitions and callers, and FLOW shows who calls the functions this step
-          changed.
-        </p>
-      </header>
-      <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>↕ moved · o unfold · gc callers · gd definition</span></div>
-        <div class="player" data-cast="casts/03-diff.cast"></div>
-      </figure>
-    </article>
-
-    <article class="feature">
-      <header>
-        <span class="num">03</span>
         <h2>No rubber stamp</h2>
-        <p>
-          A step counts as reviewed only when you move past it or skip it with a reason. The
-          viewer tracks which changed lines you actually scrolled past and reminds you once
-          about the rest, or about a hotspot nobody discussed. Ask the agent anything on the
-          way; it answers from the code.
-        </p>
-      </header>
+        <p>A step counts as reviewed only when you move past it or skip it with a reason. The viewer tracks which changed lines you actually scrolled past and reminds you once about the rest, or about a hotspot nobody discussed.</p>
+      </div>
       <figure class="term">
         <div class="term-bar"><i></i><i></i><i></i><span>&gt; next · ? ask · c comment</span></div>
-        <div class="player" data-cast="casts/04-no-rubber-stamp.cast"></div>
+        <div class="player" data-cast="casts/03-no-rubber-stamp.cast"></div>
       </figure>
     </article>
-
-    <article class="feature">
-      <header>
-        <span class="num">04</span>
+    <article class="row">
+      <div class="row-text">
+        <span class="num">03</span>
         <h2>Round two starts where you left off</h2>
-        <p>
-          After the author pushes, you see only what changed since your last round. Your
-          open threads come first, with the author's replies. The agent checks each reply
-          against the new code and suggests resolve or keep open with a reply. You decide.
-        </p>
-      </header>
+        <p>After the author pushes, you see only what changed since your last round. Your open threads come first, with the author's replies. The agent checks each reply against the new code and suggests resolve or keep open. You decide.</p>
+      </div>
       <figure class="term">
         <div class="term-bar"><i></i><i></i><i></i><span>R replies · a take the agent's suggestion</span></div>
-        <div class="player" data-cast="casts/05-next-round.cast"></div>
+        <div class="player" data-cast="casts/04-next-round.cast"></div>
       </figure>
     </article>
-
-    <article class="feature">
-      <header>
-        <span class="num">05</span>
+    <article class="row">
+      <div class="row-text">
+        <span class="num">04</span>
         <h2>Nothing is posted before you see it</h2>
-        <p>
-          At the end you see every inline comment and the summary exactly as they will be
-          posted. Edit a comment, delete it, change its severity. Only after your yes does the
-          agent publish: GitLab draft notes in one batch, or one GitHub review.
-        </p>
-      </header>
+        <p>At the end you see every inline comment and the summary exactly as they will be posted. Edit, delete, change a severity. Only after your yes does the agent publish: GitLab draft notes in one batch, or one GitHub review.</p>
+      </div>
       <figure class="term">
         <div class="term-bar"><i></i><i></i><i></i><span>P finish · s severity · E edit · DD delete</span></div>
-        <div class="player" data-cast="casts/06-finish.cast"></div>
+        <div class="player" data-cast="casts/05-finish.cast"></div>
       </figure>
     </article>
+  </section>
 
+  <section id="deep" class="deep wrap">
+    <div class="deep-head">
+      <p class="eyebrow">Under the hood</p>
+      <h2>The small things that make reading fast</h2>
+    </div>
+    <div class="carousel" data-carousel>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" data-cast="casts/06-details.cast" aria-selected="true">
+          <span class="tab-title">Details behind every note</span>
+          <span class="tab-text">
+            <kbd>i</kbd> on a note or ⚑ opens the explanation the agent wrote while planning:
+            the problem, when it bites, what to do, with the code it mentions shown underneath.
+            <kbd>1</kbd>–<kbd>9</kbd> opens that code. <kbd>?</kbd> on a line asks for more.
+          </span>
+          <span class="tab-progress"><i></i></span>
+        </button>
+        <button class="tab" role="tab" data-cast="casts/07-lsp.cast" aria-selected="false">
+          <span class="tab-title">A language server in the diff</span>
+          <span class="tab-text">
+            FLOW lists who calls the functions this step changed and what they call. On any
+            symbol: <kbd>K</kbd> type and docs, <kbd>gd</kbd> definition, <kbd>gr</kbd>
+            references, <kbd>gi</kbd> implementations, <kbd>gc</kbd> callers — and you keep
+            navigating from inside a peek.
+          </span>
+          <span class="tab-progress"><i></i></span>
+        </button>
+        <button class="tab" role="tab" data-cast="casts/08-diff.cast" aria-selected="false">
+          <span class="tab-title">A diff that reads like code</span>
+          <span class="tab-text">
+            Moved code is marked <b>↕</b> instead of shown twice. Large deletions fold away
+            until you press <kbd>o</kbd>. Only the words that changed inside a line are
+            coloured. <kbd>s</kbd> flips between unified and split.
+          </span>
+          <span class="tab-progress"><i></i></span>
+        </button>
+      </div>
+      <figure class="term">
+        <div class="term-bar"><i></i><i></i><i></i><span data-carousel-bar>gr view</span></div>
+        <div class="player" data-carousel-player></div>
+      </figure>
+    </div>
   </section>
 
   <section id="install" class="install wrap">

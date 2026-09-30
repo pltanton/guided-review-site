@@ -3,7 +3,7 @@ set -euo pipefail
 
 : "${WORK:?}" "${CAST:?}"
 SCENES=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-COLS=140 ROWS=40
+COLS=150 ROWS=40
 SOCK="grdemo-$$"
 PR=https://github.com/demo/ledger/pull/42
 
@@ -56,6 +56,7 @@ stop() {
   t kill-server 2>/dev/null || true
   wait "$recorder" 2>/dev/null || true
   recorder=""
+  grep -v 'server exited' "$CAST" >"$CAST.tmp" && mv "$CAST.tmp" "$CAST"
 }
 
 # The human.
@@ -115,3 +116,4 @@ round1_published() {
   gr mark-published >/dev/null
   echo 2 >"$DEMO_GH/round"
 }
+geometry() { [[ -n ${SNAP:-} ]] && t display -p -t demo 'window #{window_width}x#{window_height} pane #{pane_width}x#{pane_height} client #{client_width}x#{client_height}' >&2 || true; }

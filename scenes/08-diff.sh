@@ -7,17 +7,6 @@ listen message
 lsp_ready
 record
 pause 3
-key /
-typing "func Validate"
-key Enter Escape
-pause 1
-key w
-pause 0.5
-key g c
-pause 3
-snap callers
-key Escape
-pause 1
 key '}'
 pause 1.5
 snap moved-fold
@@ -36,14 +25,9 @@ key o
 pause 1
 key '}'
 pause 1
-key /
-typing "NewChecker"
-key Enter Escape
-pause 0.8
-key w w w w w
-pause 0.5
-key g d
-pause 3.5
-snap definition
-key Escape
+key s
+pause 4
+snap split
+key s
+pause 1.5
 stop 1
