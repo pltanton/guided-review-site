@@ -42,6 +42,7 @@ viewer() {
     "gr view; sleep 3600"
   t set -g status off
   t set -g escape-time 0
+  t set -as terminal-features ",*:RGB"
 }
 
 record() {
