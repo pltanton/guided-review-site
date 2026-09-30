@@ -1,213 +1,129 @@
 <!doctype html>
 <html lang="en">
-<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>guided-review</title>
 <meta name="description" content="An agent reads the merge request first and walks you through it in small steps. You judge the code; it writes the comments and posts them when you say so.">
 <meta property="og:title" content="guided-review — keep the human review, lose the grind">
 <meta property="og:description" content="An agent plans the route through a merge request and walks you through it in a terminal viewer. Claude Code or Codex, GitLab or GitHub.">
-<meta property="og:type" content="website">
 <meta property="og:url" content="https://guided-review.pltanton.dev/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314161f'/%3E%3Cpath d='M10 7v18M10 8h11l-3 4 3 4H10' stroke='%23FCD34D' stroke-width='2.4' fill='none' stroke-linejoin='round'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.css">
 <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<script defer src="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.min.js"></script>
+<script defer src="app.js"></script>
 
-<header class="nav">
-  <div class="wrap nav-row">
-    <a class="brand" href="#top"><span class="flag" aria-hidden="true">⚑</span> guided-review</a>
-    <nav>
-      <a href="#features">Features</a>
-      <a href="#deep">Under the hood</a>
-      <a href="#install">Install</a>
-      <a class="gh" href="https://github.com/pltanton/guided-review">GitHub</a>
-    </nav>
-  </div>
+<header>
+  <a class="brand" href="#top"><b>⚑</b> guided-review</a>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#deep">Under the hood</a>
+    <a href="#install">Install</a>
+    <a href="https://github.com/pltanton/guided-review">GitHub</a>
+  </nav>
 </header>
 
-<main id="top">
-  <section class="hero wrap">
-    <div class="hero-text">
-      <p class="eyebrow">Claude Code or Codex · GitLab or GitHub · tmux</p>
-      <h1>Keep the human review. <span class="soft">Lose the <em>grind.</em></span></h1>
-      <p class="lede">
-        Agents write code faster than people can review it. Here the agent reads the merge
-        request first, cuts it into small steps in a sensible order and walks you through
-        them. You decide what is wrong; it writes the comments and posts them when you say so.
-      </p>
-      <div class="cta">
-        <a class="button primary" href="#install">Install</a>
-        <a class="button" href="https://github.com/pltanton/guided-review">GitHub</a>
-      </div>
-      <ul class="facts">
-        <li><b>Chapters by behaviour</b>, not by file</li>
-        <li><b>⚑ hotspots</b> where a mistake is expensive</li>
-        <li><b>Every step</b> needs your “next” or a reason to skip</li>
-      </ul>
-    </div>
-    <figure class="term hero-term">
-      <div class="term-bar"><i></i><i></i><i></i><span>gr view · PR #42 Daily transfer limits per account</span></div>
-      <div class="player" data-cast="casts/01-plan.cast"></div>
-    </figure>
-    <a class="scroll-cue" href="#features" aria-label="Features">
-      <span>See it work</span><i aria-hidden="true">↓</i>
-    </a>
-  </section>
+<main>
 
-  <section id="features" class="rows wrap">
-    <article class="row">
-      <div class="row-text">
-        <span class="num">01</span>
-        <h2>Say it in your own words</h2>
-        <p>Point at a line and write what bothers you, the way you would say it to a colleague. The agent turns it into a review comment with a severity and, when the fix is obvious, a suggestion. When it needs a decision, it offers answers you pick with one key.</p>
-      </div>
-      <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>c on a line · alt+1 to answer</span><button class="expand" type="button" aria-label="Open larger">⤢ larger</button></div>
-        <div class="player" data-cast="casts/02-conversation.cast"></div>
-      </figure>
-    </article>
-    <article class="row">
-      <div class="row-text">
-        <span class="num">02</span>
-        <h2>No rubber stamp</h2>
-        <p>A step counts as reviewed only when you move past it or skip it with a reason. The viewer tracks which changed lines you actually scrolled past and reminds you once about the rest, or about a hotspot nobody discussed.</p>
-      </div>
-      <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>&gt; next · ? ask · c comment</span><button class="expand" type="button" aria-label="Open larger">⤢ larger</button></div>
-        <div class="player" data-cast="casts/03-no-rubber-stamp.cast"></div>
-      </figure>
-    </article>
-    <article class="row">
-      <div class="row-text">
-        <span class="num">03</span>
-        <h2>Round two starts where you left off</h2>
-        <p>After the author pushes, you see only what changed since your last round. Your open threads come first, with the author's replies. The agent checks each reply against the new code and suggests resolve or keep open. You decide.</p>
-      </div>
-      <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>R replies · a take the agent's suggestion</span><button class="expand" type="button" aria-label="Open larger">⤢ larger</button></div>
-        <div class="player" data-cast="casts/04-next-round.cast"></div>
-      </figure>
-    </article>
-    <article class="row">
-      <div class="row-text">
-        <span class="num">04</span>
-        <h2>Nothing is posted before you see it</h2>
-        <p>At the end you see every inline comment and the summary exactly as they will be posted. Edit, delete, change a severity. Only after your yes does the agent publish: GitLab draft notes in one batch, or one GitHub review.</p>
-      </div>
-      <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>P finish · s severity · E edit · DD delete</span><button class="expand" type="button" aria-label="Open larger">⤢ larger</button></div>
-        <div class="player" data-cast="casts/05-finish.cast"></div>
-      </figure>
-    </article>
-  </section>
+<section class="hero" id="top">
+  <div>
+    <p class="eyebrow">Claude Code or Codex · GitLab or GitHub · tmux</p>
+    <h1>Keep the human review. <span>Lose the <em>grind.</em></span></h1>
+    <p class="lede">Agents write code faster than people can review it. Here the agent reads the merge request first, cuts it into small steps in a sensible order and walks you through them. You decide what is wrong; it writes the comments and posts them when you say so.</p>
+    <p class="cta"><a class="btn primary" href="#install">Install</a> <a class="btn" href="https://github.com/pltanton/guided-review">GitHub</a></p>
+    <ul class="facts">
+      <li><b>Chapters by behaviour</b>, not by file
+      <li><b>⚑ hotspots</b> where a mistake is expensive
+      <li><b>Every step</b> needs your “next” or a reason to skip
+    </ul>
+  </div>
+  <figure class="term"><figcaption>gr view · PR #42 Daily transfer limits per account</figcaption><div data-cast="casts/01-plan.cast"></div></figure>
+  <a class="cue" href="#features">See it work <i>↓</i></a>
+</section>
 
-  <section id="deep" class="deep wrap">
-    <div class="deep-head">
-      <p class="eyebrow">Under the hood</p>
-      <h2>The small things that make reading fast</h2>
+<section id="features">
+  <article class="row">
+    <div>
+      <small>01</small>
+      <h2>Say it in your own words</h2>
+      <p>Point at a line and write what bothers you, the way you would say it to a colleague. The agent turns it into a review comment with a severity and, when the fix is obvious, a suggestion. When it needs a decision, it offers answers you pick with one key.</p>
     </div>
-    <div class="carousel" data-carousel>
-      <div class="tabs" role="tablist">
-        <button class="tab" role="tab" data-cast="casts/06-details.cast" aria-selected="true">
-          <span class="tab-title">Details behind every note</span>
-          <span class="tab-text">
-            <kbd>i</kbd> on a note or ⚑ opens the explanation the agent wrote while planning:
-            the problem, when it bites, what to do, with the code it mentions shown underneath.
-            <kbd>1</kbd>–<kbd>9</kbd> opens that code. <kbd>?</kbd> on a line asks for more.
-          </span>
-          <span class="tab-progress"><i></i></span>
-        </button>
-        <button class="tab" role="tab" data-cast="casts/07-lsp.cast" aria-selected="false">
-          <span class="tab-title">A language server in the diff</span>
-          <span class="tab-text">
-            FLOW lists who calls the functions this step changed and what they call. On any
-            symbol: <kbd>K</kbd> type and docs, <kbd>gd</kbd> definition, <kbd>gr</kbd>
-            references, <kbd>gi</kbd> implementations, <kbd>gc</kbd> callers — and you keep
-            navigating from inside a peek.
-          </span>
-          <span class="tab-progress"><i></i></span>
-        </button>
-        <button class="tab" role="tab" data-cast="casts/08-diff.cast" aria-selected="false">
-          <span class="tab-title">A diff that reads like code</span>
-          <span class="tab-text">
-            Moved code is marked <b>↕</b> instead of shown twice. Large deletions fold away
-            until you press <kbd>o</kbd>. Only the words that changed inside a line are
-            coloured. <kbd>s</kbd> flips between unified and split.
-          </span>
-          <span class="tab-progress"><i></i></span>
-        </button>
-      </div>
-      <figure class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span data-carousel-bar>gr view</span>
-          <div class="pager">
-            <button type="button" data-prev aria-label="Previous">‹</button>
-            <span data-count>1 / 3</span>
-            <button type="button" data-next aria-label="Next">›</button>
-          </div>
-        </div>
-        <div class="stack" data-carousel-stack></div>
-      </figure>
+    <figure class="term zoom"><figcaption>c on a line · alt+1 to answer</figcaption><div data-cast="casts/02-conversation.cast"></div></figure>
+  </article>
+  <article class="row">
+    <div>
+      <small>02</small>
+      <h2>No rubber stamp</h2>
+      <p>A step counts as reviewed only when you move past it or skip it with a reason. The viewer tracks which changed lines you actually scrolled past and reminds you once about the rest, or about a hotspot nobody discussed.</p>
     </div>
-  </section>
+    <figure class="term zoom"><figcaption>&gt; next · ? ask · c comment</figcaption><div data-cast="casts/03-no-rubber-stamp.cast"></div></figure>
+  </article>
+  <article class="row">
+    <div>
+      <small>03</small>
+      <h2>Round two starts where you left off</h2>
+      <p>After the author pushes, you see only what changed since your last round. Your open threads come first, with the author's replies. The agent checks each reply against the new code and suggests resolve or keep open. You decide.</p>
+    </div>
+    <figure class="term zoom"><figcaption>R replies · a take the agent's suggestion</figcaption><div data-cast="casts/04-next-round.cast"></div></figure>
+  </article>
+  <article class="row">
+    <div>
+      <small>04</small>
+      <h2>Nothing is posted before you see it</h2>
+      <p>At the end you see every inline comment and the summary exactly as they will be posted. Edit, delete, change a severity. Only after your yes does the agent publish: GitLab draft notes in one batch, or one GitHub review.</p>
+    </div>
+    <figure class="term zoom"><figcaption>P finish · s severity · E edit · DD delete</figcaption><div data-cast="casts/05-finish.cast"></div></figure>
+  </article>
+</section>
 
-  <section id="install" class="install wrap">
-    <h2>Install</h2>
-    <div class="install-grid">
-      <div>
-        <h3>Ask your agent</h3>
-        <p>Paste this into Claude Code or Codex. It checks the prerequisites, installs <code>gr</code> and the skills, and tells you what is left for you.</p>
-        <div class="copy">
-          <pre id="prompt">Install guided-review from https://github.com/pltanton/guided-review, follow its INSTALL.md</pre>
-          <button type="button" data-copy="prompt">Copy</button>
-        </div>
-      </div>
-      <div>
-        <h3>By hand</h3>
-        <p>Go, tmux and <code>glab</code> or <code>gh</code> first; then:</p>
-        <div class="copy">
-          <pre id="manual">go install github.com/pltanton/guided-review/cmd/gr@latest
+<section class="deep" id="deep">
+  <p class="eyebrow">Under the hood</p>
+  <h2>The small things that make reading fast</h2>
+  <div class="carousel">
+    <div class="tabs">
+      <input type="radio" name="deep" id="d1" checked>
+      <label for="d1"><b>Details behind every note</b>
+        <span><kbd>i</kbd> on a note or ⚑ opens the explanation the agent wrote while planning: the problem, when it bites, what to do, with the code it mentions shown underneath. <kbd>1</kbd>–<kbd>9</kbd> opens that code; <kbd>?</kbd> on a line asks for more.</span></label>
+      <input type="radio" name="deep" id="d2">
+      <label for="d2"><b>A language server in the diff</b>
+        <span>FLOW lists who calls the functions this step changed and what they call. On any symbol: <kbd>K</kbd> type and docs, <kbd>gd</kbd> definition, <kbd>gr</kbd> references, <kbd>gi</kbd> implementations, <kbd>gc</kbd> callers — and you keep going from inside a peek.</span></label>
+      <input type="radio" name="deep" id="d3">
+      <label for="d3"><b>A diff that reads like code</b>
+        <span>Moved code is marked <b>↕</b> instead of shown twice. Large deletions fold away until you press <kbd>o</kbd>. Only the words that changed inside a line are coloured. <kbd>s</kbd> flips between unified and split.</span></label>
+    </div>
+    <div class="slides">
+      <figure class="term"><figcaption>1 / 3 · Details behind every note <label for="d3">‹</label><label for="d2">›</label></figcaption><div data-cast="casts/06-details.cast"></div></figure>
+      <figure class="term"><figcaption>2 / 3 · A language server in the diff <label for="d1">‹</label><label for="d3">›</label></figcaption><div data-cast="casts/07-lsp.cast"></div></figure>
+      <figure class="term"><figcaption>3 / 3 · A diff that reads like code <label for="d2">‹</label><label for="d1">›</label></figcaption><div data-cast="casts/08-diff.cast"></div></figure>
+    </div>
+  </div>
+</section>
+
+<section class="install" id="install">
+  <h2>Install</h2>
+  <div class="two">
+    <div>
+      <h3>Ask your agent</h3>
+      <p>Paste this into Claude Code or Codex. It checks the prerequisites, installs <code>gr</code> and the skills, and tells you what is left for you.</p>
+      <pre>Install guided-review from https://github.com/pltanton/guided-review, follow its INSTALL.md</pre>
+    </div>
+    <div>
+      <h3>By hand</h3>
+      <p>Go, tmux and <code>glab</code> or <code>gh</code> first; then:</p>
+      <pre>go install github.com/pltanton/guided-review/cmd/gr@latest
 claude plugin marketplace add pltanton/guided-review
 claude plugin install guided-review@guided-review</pre>
-          <button type="button" data-copy="manual">Copy</button>
-        </div>
-      </div>
     </div>
-    <div class="use">
-      <h3>Then, in tmux inside the repository</h3>
-      <div class="copy">
-        <pre id="use">/guided-review https://gitlab.example.com/group/project/-/merge_requests/123</pre>
-        <button type="button" data-copy="use">Copy</button>
-      </div>
-    </div>
-  </section>
+  </div>
+  <h3>Then, in tmux inside the repository</h3>
+  <pre>/guided-review https://gitlab.example.com/group/project/-/merge_requests/123</pre>
+</section>
+
 </main>
 
-<dialog class="lightbox" data-lightbox>
-  <figure class="term">
-    <div class="term-bar"><i></i><i></i><i></i><span data-lightbox-bar></span>
-      <button class="expand" type="button" data-close aria-label="Close">✕ close</button>
-    </div>
-    <div class="player" data-lightbox-player></div>
-  </figure>
-</dialog>
+<dialog><figure class="term"><figcaption></figcaption><div></div></figure></dialog>
 
-<footer class="foot">
-  <div class="wrap foot-row">
-    <p>
-      The recordings run the real <code>gr</code> viewer on a demo repository. The agent's
-      side is scripted so every take is the same; in a real review Claude Code or Codex says
-      these lines.
-    </p>
-    <p><a href="https://github.com/pltanton/guided-review">GitHub</a> · Apache-2.0</p>
-  </div>
+<footer>
+  <p>The recordings run the real <code>gr</code> viewer on a demo repository. The agent's side is scripted so every take is the same; in a real review Claude Code or Codex says these lines.</p>
+  <p><a href="https://github.com/pltanton/guided-review">GitHub</a> · Apache-2.0</p>
 </footer>
-
-<script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.min.js"></script>
-<script src="app.js"></script>
-</body>
-</html>
