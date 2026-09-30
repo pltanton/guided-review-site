@@ -65,5 +65,5 @@ for (const figure of document.querySelectorAll(".zoom")) figure.firstElementChil
   screen.replaceChildren();
   screen.dataset.cast = figure.querySelector("[data-cast]").dataset.cast;
   dialog.showModal();
-  big = mount(screen, { autoPlay: true, loop: true, controls: true });
+  big = mount(screen, { fit: "both", autoPlay: true, loop: true, controls: true });
 });
