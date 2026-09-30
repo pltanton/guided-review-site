@@ -1,15 +1,15 @@
 :root {
   color-scheme: light dark;
-  --bg: light-dark(#f6f5f1, #0b0c11);
+  --bg: light-dark(#f3f4f7, #0b0c11);
   --raise: light-dark(#fff, #12141b);
   --ink: light-dark(#15171e, #e8e9ee);
   --soft: light-dark(#3b3f4b, #c3c6d0);
   --muted: light-dark(#6a6f7d, #8a8fa0);
-  --line: light-dark(#e2e0d8, #22252f);
+  --line: light-dark(#e0e2e8, #22252f);
   --accent: light-dark(#b45309, #fcd34d);
   --term: #14161f;
   --bar: #1b1e29;
-  --shadow: 0 30px 70px -30px light-dark(#15171e66, #000);
+  --shadow: 0 0 0 1px light-dark(#15171e14, #ffffff0a), 0 2px 4px light-dark(#15171e0f, #0000), 0 24px 48px -24px light-dark(#15171e4d, #000);
   --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --serif: ui-serif, "New York", Georgia, serif;
