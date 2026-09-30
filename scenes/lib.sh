@@ -88,3 +88,13 @@ say() { gr say "$@"; }
 
 screen() { t capture-pane -p -t demo; }
 snap() { [[ -n ${SNAP:-} ]] && { echo "--- $1"; screen; } >&2 || true; }
+# Blocks until the language server answered: FLOW shows up once gopls has indexed the step.
+lsp_ready() {
+  local i
+  for ((i = 0; i < 120; i++)); do
+    screen | grep -q ' FLOW ' && return 0
+    sleep 0.5
+  done
+  echo "gopls did not answer" >&2
+  return 1
+}

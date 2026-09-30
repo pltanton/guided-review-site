@@ -100,7 +100,7 @@ steps:
       s5/7 · POST /transfers — euros in, cents inside
       The body now carries a float amount in euros; the handler converts it to cents.
       ❓ ⚑40: 19.99 → 1998 cents?
-    hunks: [{ file: internal/api/handler.go }]
+    hunks: [{ file: internal/api/handler.go, lines: 1-54 }]
     hotspots:
       - cat: money
         line: 40
@@ -152,5 +152,6 @@ steps:
       Validate is the old validateTransfer moved into transfer; fees.go has no callers left.
     hunks:
       - { file: internal/transfer/validate.go }
+      - { file: internal/api/handler.go, lines: 55 }
       - { file: internal/legacy/fees.go }
       - { file: cmd/ledger/main.go }
