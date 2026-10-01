@@ -117,8 +117,7 @@ h1 em { font: italic 400 1.14em/1 var(--serif); letter-spacing: -.01em; color: v
 .slides > * { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .5s, visibility 0s .5s; }
 .deep:has(#d1:checked) .slides > :nth-child(1),
 .deep:has(#d2:checked) .slides > :nth-child(2),
-.deep:has(#d3:checked) .slides > :nth-child(3),
-.deep:has(#d4:checked) .slides > :nth-child(4) { opacity: 1; visibility: visible; transition: opacity .5s; }
+.deep:has(#d3:checked) .slides > :nth-child(3) { opacity: 1; visibility: visible; transition: opacity .5s; }
 
 .install { padding: 88px 0 96px; border-top: 1px solid var(--line); }
 .install h2 { font-size: clamp(32px, 4vw, 48px); margin-bottom: 40px; }
