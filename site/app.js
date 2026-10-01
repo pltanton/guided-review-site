@@ -67,10 +67,35 @@ function attach(figure, extra) {
   return state;
 }
 
-for (const figure of document.querySelectorAll(".hero .term, .row .term")) {
-  const s = attach(figure, { loop: true });
-  if (!still) whenSeen(figure, (seen) => (seen && !s.held ? s.player.play() : s.player.pause()));
-}
+const hero = attach(document.querySelector(".hero .term"), { loop: true });
+if (!still) whenSeen(document.querySelector(".hero .term"), (seen) => (seen && !hero.held ? hero.player.play() : hero.player.pause()));
+
+const rows = [...document.querySelectorAll("#features .row")];
+const shows = rows.map((row) => attach(row.querySelector(".term"), { loop: true }));
+const sticky = matchMedia("(min-width: 981px)");
+let active = -1;
+const activate = (i) => {
+  if (i === active) return;
+  active = i;
+  rows.forEach((row, n) => row.classList.toggle("on", n === i));
+  shows.forEach((s, n) => (n === i && !still && !s.held ? s.player.play() : s.player.pause()));
+};
+const middle = new IntersectionObserver(
+  (entries) => {
+    if (!sticky.matches) return;
+    for (const e of entries) if (e.isIntersecting) activate(rows.indexOf(e.target.parentElement));
+  },
+  { rootMargin: "-45% 0px -45% 0px" },
+);
+rows.forEach((row) => middle.observe(row.firstElementChild));
+const leave = new IntersectionObserver(([e]) => sticky.matches && !e.isIntersecting && activate(-1));
+leave.observe(document.querySelector("#features"));
+shows.forEach((s, i) => {
+  if (!still) whenSeen(rows[i].querySelector(".term"), (seen) => {
+    if (sticky.matches) return;
+    seen && !s.held ? s.player.play() : s.player.pause();
+  });
+});
 
 const deep = document.querySelector(".deep");
 const radios = [...deep.querySelectorAll("input")];
