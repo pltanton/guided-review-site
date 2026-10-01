@@ -53,6 +53,11 @@ function attach(figure, extra) {
     state.playing ? player.pause() : player.play();
   };
   button.addEventListener("click", toggle);
+  screen.addEventListener("mousedown", () => {
+    if (!state.playing) return;
+    state.held = true;
+    player.pause();
+  });
   seek.addEventListener("click", async (e) => {
     const box = seek.getBoundingClientRect();
     await player.seek(((e.clientX - box.left) / box.width) * (await player.getDuration()));
