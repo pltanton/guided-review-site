@@ -88,7 +88,11 @@ const middle = new IntersectionObserver(
   { rootMargin: "-45% 0px -45% 0px" },
 );
 rows.forEach((row) => middle.observe(row.firstElementChild));
-const leave = new IntersectionObserver(([e]) => sticky.matches && !e.isIntersecting && activate(-1));
+const leave = new IntersectionObserver(([e]) => {
+  if (!sticky.matches) return;
+  if (!e.isIntersecting) activate(-1);
+  else if (active < 0) activate(e.boundingClientRect.top > 0 ? 0 : rows.length - 1);
+});
 leave.observe(document.querySelector("#features"));
 shows.forEach((s, i) => {
   if (!still) whenSeen(rows[i].querySelector(".term"), (seen) => {
