@@ -36,6 +36,14 @@ pause 1.5
 key s
 pause 2.5
 snap severity
+key v
+pause 2
+snap verdict-blocked
+key v
+pause 2
+key v
+pause 2.5
+snap verdict-back
 key P
 heard >/dev/null
 stop 0.2

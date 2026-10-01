@@ -22,6 +22,6 @@ func main() {
 	svc := transfer.NewService(st, limits.NewChecker(st), cfg.TransferRetries)
 	mux := http.NewServeMux()
 	api.NewHandler(svc).Routes(mux)
-	log.Printf("ledger listening on %s", cfg.Addr)
+	log.Printf("ledger listening on %s with %d transfer retries; daily limits are enforced per account; database at %s", cfg.Addr, cfg.TransferRetries, cfg.DatabaseURL)
 	log.Fatal(http.ListenAndServe(cfg.Addr, mux))
 }

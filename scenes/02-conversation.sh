@@ -11,8 +11,11 @@ typing "int64(body"
 key Enter Escape
 pause 1.5
 key c
-typing "this truncates, 19.99 comes out as 1998 cents. round it"
-pause 0.6
+typing "this truncates, 19.99 comes out as 1998 cents."
+key M-Enter
+typing "round it instead"
+pause 1.2
+snap compose
 key Enter
 heard >/dev/null
 thinking "writing the comment" 2

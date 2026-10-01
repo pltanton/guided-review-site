@@ -48,9 +48,9 @@
     <div>
       <small>01</small>
       <h2>Say it in your own words</h2>
-      <p>Point at a line and write what bothers you, the way you would say it to a colleague. The agent turns it into a review comment with a severity and, when the fix is obvious, a suggestion. When it needs a decision, it offers answers you pick with one key.</p>
+      <p>Point at a line and write what bothers you, the way you would say it to a colleague. The agent turns it into a review comment with a severity and, when the fix is obvious, a suggestion. A message can take several lines; the line under the input always shows what it will be and which keys apply. When the agent needs a decision, it offers answers you pick with one key.</p>
     </div>
-    <figure class="term zoom"><figcaption><span>c on a line · alt+1 to answer</span></figcaption><div data-cast="casts/02-conversation.cast"></div></figure>
+    <figure class="term zoom"><figcaption><span>c on a line · alt+enter new line · alt+1 to answer</span></figcaption><div data-cast="casts/02-conversation.cast"></div></figure>
   </article>
   <article class="row">
     <div>
@@ -72,9 +72,9 @@
     <div>
       <small>04</small>
       <h2>Nothing is posted before you see it</h2>
-      <p>At the end you see every inline comment and the summary exactly as they will be posted. Edit, delete, change a severity. Only after your yes does the agent publish: GitLab draft notes in one batch, or one GitHub review.</p>
+      <p>At the end you see every inline comment and the summary exactly as they will be posted. Edit, delete, change a severity, switch the verdict. Only after your yes does the agent publish: GitLab draft notes in one batch, or one GitHub review.</p>
     </div>
-    <figure class="term zoom"><figcaption><span>P finish · s severity · E edit · DD delete</span></figcaption><div data-cast="casts/05-finish.cast"></div></figure>
+    <figure class="term zoom"><figcaption><span>P finish · v verdict · s severity · E edit · DD delete</span></figcaption><div data-cast="casts/05-finish.cast"></div></figure>
   </article>
 </section>
 
@@ -92,11 +92,15 @@
       <input type="radio" name="deep" id="d3">
       <label for="d3"><b>A diff that reads like code</b>
         <span>Moved code is marked <b>↕</b> instead of shown twice. Large deletions fold away until you press <kbd>o</kbd>. Only the words that changed inside a line are coloured. <kbd>s</kbd> flips between unified and split.</span></label>
+      <input type="radio" name="deep" id="d4">
+      <label for="d4"><b>Nothing hides past the edge</b>
+        <span>Long lines wrap at word boundaries, so a change at the end of a line is on screen. <kbd>W</kbd> cuts them instead and <kbd>h</kbd>/<kbd>l</kbd> scroll sideways. <kbd>t</kbd> moves into the chat to select and copy what the agent said; <kbd>ctrl+p</kbd> folds the chapters of a long plan.</span></label>
     </div>
     <div class="slides">
-      <figure class="term"><figcaption><span>i details · 1–9 open code · A explain</span><span class="pager"><label for="d3">‹</label>1 / 3<label for="d2">›</label></span></figcaption><div data-cast="casts/06-details.cast"></div></figure>
-      <figure class="term"><figcaption><span>K hover · gd definition · gc callers</span><span class="pager"><label for="d1">‹</label>2 / 3<label for="d3">›</label></span></figcaption><div data-cast="casts/07-lsp.cast"></div></figure>
-      <figure class="term"><figcaption><span>↕ moved · o unfold · s split</span><span class="pager"><label for="d2">‹</label>3 / 3<label for="d1">›</label></span></figcaption><div data-cast="casts/08-diff.cast"></div></figure>
+      <figure class="term"><figcaption><span>i details · 1–9 open code · A explain</span><span class="pager"><label for="d4">‹</label>1 / 4<label for="d2">›</label></span></figcaption><div data-cast="casts/06-details.cast"></div></figure>
+      <figure class="term"><figcaption><span>K hover · gd definition · gc callers</span><span class="pager"><label for="d1">‹</label>2 / 4<label for="d3">›</label></span></figcaption><div data-cast="casts/07-lsp.cast"></div></figure>
+      <figure class="term"><figcaption><span>↕ moved · o unfold · s split</span><span class="pager"><label for="d2">‹</label>3 / 4<label for="d4">›</label></span></figcaption><div data-cast="casts/08-diff.cast"></div></figure>
+      <figure class="term"><figcaption><span>wrap · W cut · h/l scroll · t copy from chat</span><span class="pager"><label for="d3">‹</label>4 / 4<label for="d1">›</label></span></figcaption><div data-cast="casts/09-every-line.cast"></div></figure>
     </div>
   </div>
 </section>
