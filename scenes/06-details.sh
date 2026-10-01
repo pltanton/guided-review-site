@@ -22,7 +22,7 @@ key Escape
 pause 1
 key n
 pause 1
-key '?'
+key A
 pause 0.5
 key Enter
 listen message

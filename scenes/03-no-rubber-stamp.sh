@@ -12,7 +12,7 @@ pause 3
 snap hotspot-reminder
 key n
 pause 1
-key '?'
+key A
 typing "can two transfers get past this check at the same time?"
 key Enter
 heard >/dev/null
