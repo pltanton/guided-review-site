@@ -185,3 +185,13 @@ footer p { margin: 0; max-width: 70ch; }
 }
 .term button:focus:not(:focus-visible) { outline: none; }
 .ap-overlay-start { display: none !important; }
+
+.early {
+  margin: 0;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 14px;
+  background: light-dark(#fff3d6, #3a2f12);
+  color: light-dark(#6b4e00, #fcd34d);
+}
+.early a { color: inherit; font-weight: 600; }
