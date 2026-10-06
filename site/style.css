@@ -190,7 +190,7 @@ footer p { margin: 0; max-width: 70ch; }
 }
 .early a { color: inherit; font-weight: 600; }
 
-.card { max-width: 980px; padding: 22px; border-radius: 18px; background: var(--raise); box-shadow: var(--shadow); }
+.card { padding: 22px; border-radius: 18px; background: var(--raise); box-shadow: var(--shadow); }
 .seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; margin-bottom: 18px; border-radius: 12px; background: var(--bg); }
 .seg button { border: 0; border-radius: 9px; padding: 7px 14px; background: transparent; color: var(--muted); font: 600 14px var(--sans); cursor: pointer; }
 .seg button.on { background: var(--raise); color: var(--ink); box-shadow: 0 1px 3px #15171e1f; }
