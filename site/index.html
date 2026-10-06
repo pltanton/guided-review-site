@@ -17,7 +17,7 @@
 <meta name="twitter:image" content="https://guided-review.pltanton.dev/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314161f'/%3E%3Cpath d='M10 7v18M10 8h11l-3 4 3 4H10' stroke='%23FCD34D' stroke-width='2.4' fill='none' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.css">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 <script>try { const t = localStorage.theme; if (t) document.documentElement.dataset.theme = t; } catch {}</script>
 <script defer src="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.min.js"></script>
 <script defer src="app.js?v=3"></script>
@@ -119,7 +119,7 @@
     </div>
     <div>
       <h3>By hand</h3>
-      <p>Go, tmux and <code>glab</code> or <code>gh</code> first; then:</p>
+      <p>Go and tmux first, <code>glab</code> or <code>gh</code> recommended; then:</p>
       <pre>go install github.com/pltanton/guided-review/cmd/gr@latest
 claude plugin marketplace add pltanton/guided-review
 claude plugin install guided-review@guided-review</pre>
@@ -127,6 +127,18 @@ claude plugin install guided-review@guided-review</pre>
   </div>
   <h3>Then, in tmux inside the repository</h3>
   <pre>/guided-review https://gitlab.example.com/group/project/-/merge_requests/123</pre>
+  <div class="two later">
+    <div>
+      <h3>Update</h3>
+      <p>Ask your agent the same way, or by hand (<a href="https://github.com/pltanton/guided-review/blob/main/INSTALL.md#updating">details</a>):</p>
+      <pre>Update guided-review following its INSTALL.md</pre>
+    </div>
+    <div>
+      <h3>Uninstall</h3>
+      <p>Removes the plugin, the skills and <code>gr</code>; review history stays until you say so (<a href="https://github.com/pltanton/guided-review/blob/main/INSTALL.md#uninstalling">details</a>):</p>
+      <pre>Uninstall guided-review following its INSTALL.md</pre>
+    </div>
+  </div>
 </section>
 
 </main>
