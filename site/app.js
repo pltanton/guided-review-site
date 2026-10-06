@@ -182,3 +182,23 @@ fetch("https://api.github.com/repos/pltanton/guided-review")
     count.hidden = false;
   })
   .catch(() => {});
+
+const seg = [...document.querySelectorAll(".seg button")];
+const panes = [...document.querySelectorAll(".pane")];
+seg.forEach((b) => b.addEventListener("click", () => {
+  seg.forEach((x) => x.classList.toggle("on", x === b));
+  panes.forEach((p) => p.classList.toggle("on", p.dataset.pane === b.dataset.tab));
+}));
+const copyIcon = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.8"/><path d="M10.5 3.2V3a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.3"/></svg>';
+const doneIcon = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>';
+for (const pre of document.querySelectorAll(".card pre")) {
+  const b = Object.assign(document.createElement("button"), { className: "copy", type: "button", title: "Copy", innerHTML: copyIcon });
+  b.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(pre.querySelector("code").textContent);
+      b.innerHTML = doneIcon;
+      setTimeout(() => (b.innerHTML = copyIcon), 1400);
+    } catch {}
+  });
+  pre.append(b);
+}

@@ -17,10 +17,10 @@
 <meta name="twitter:image" content="https://guided-review.pltanton.dev/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314161f'/%3E%3Cpath d='M10 7v18M10 8h11l-3 4 3 4H10' stroke='%23FCD34D' stroke-width='2.4' fill='none' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.css">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=7">
 <script>try { const t = localStorage.theme; if (t) document.documentElement.dataset.theme = t; } catch {}</script>
 <script defer src="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.min.js"></script>
-<script defer src="app.js?v=3"></script>
+<script defer src="app.js?v=4"></script>
 
 <p class="early"><b>Early version.</b> Expect rough edges, and tell us about them on <a href="https://github.com/pltanton/guided-review/issues">GitHub</a>.</p>
 
@@ -113,41 +113,55 @@
 
 <section class="install" id="install">
   <h2>Install</h2>
-  <div class="two">
-    <div>
-      <h3>Ask your agent</h3>
-      <p>Paste this into Claude Code or Codex. It checks the prerequisites, installs <code>gr</code> and the skills, and tells you what is left for you.</p>
-      <pre>Install guided-review from https://github.com/pltanton/guided-review, follow its INSTALL.md</pre>
+  <div class="card">
+    <div class="seg" role="tablist">
+      <button type="button" role="tab" class="on" data-tab="agent">Ask your agent</button>
+      <button type="button" role="tab" data-tab="claude">Claude Code</button>
+      <button type="button" role="tab" data-tab="codex">Codex</button>
     </div>
-    <div>
-      <h3>By hand</h3>
-      <p>Go and tmux first, <code>glab</code> or <code>gh</code> recommended; then:</p>
-      <pre>go install github.com/pltanton/guided-review/cmd/gr@latest
+
+    <div class="pane on" data-pane="agent">
+      <pre><code>Install guided-review from https://github.com/pltanton/guided-review, follow its INSTALL.md</code></pre>
+      <p class="hint">Paste into Claude Code or Codex. It checks the prerequisites (Go, git, tmux, jq; glab or gh recommended), installs <code>gr</code> and the skills, and tells you what is left for you.</p>
+      <dl>
+        <dt>Update</dt><dd><pre><code>Update guided-review following its INSTALL.md</code></pre></dd>
+        <dt>Remove</dt><dd><pre><code>Uninstall guided-review following its INSTALL.md</code></pre></dd>
+      </dl>
+    </div>
+
+    <div class="pane" data-pane="claude">
+      <pre><code>go install github.com/pltanton/guided-review/cmd/gr@latest
 claude plugin marketplace add pltanton/guided-review
-claude plugin install guided-review@guided-review</pre>
-    </div>
-  </div>
-  <h3>Then, in tmux inside the repository</h3>
-  <pre>/guided-review https://gitlab.example.com/group/project/-/merge_requests/123</pre>
-  <div class="two later">
-    <div>
-      <h3>Update</h3>
-      <p>Ask your agent:</p>
-      <pre>Update guided-review following its INSTALL.md</pre>
-      <p class="then">or by hand:</p>
-      <pre>go install github.com/pltanton/guided-review/cmd/gr@latest
+claude plugin install guided-review@guided-review</code></pre>
+      <dl>
+        <dt>Update</dt><dd><pre><code>go install github.com/pltanton/guided-review/cmd/gr@latest
 claude plugin marketplace update guided-review
-claude plugin update guided-review@guided-review</pre>
-    </div>
-    <div>
-      <h3>Uninstall</h3>
-      <p>Ask your agent:</p>
-      <pre>Uninstall guided-review following its INSTALL.md</pre>
-      <p class="then">or by hand:</p>
-      <pre>claude plugin uninstall guided-review@guided-review
+claude plugin update guided-review@guided-review</code></pre></dd>
+        <dt>Remove</dt><dd><pre><code>claude plugin uninstall guided-review@guided-review
 claude plugin marketplace remove guided-review
-rm -f "$(go env GOPATH)/bin/gr"</pre>
-      <p class="then">Review history stays in <code>.git/guided-review/</code> of each repository; delete it if you no longer need it (<a href="https://github.com/pltanton/guided-review/blob/main/INSTALL.md#uninstalling">what else gr leaves</a>).</p>
+rm -f "$(go env GOPATH)/bin/gr"</code></pre></dd>
+      </dl>
+    </div>
+
+    <div class="pane" data-pane="codex">
+      <pre><code>go install github.com/pltanton/guided-review/cmd/gr@latest
+git clone https://github.com/pltanton/guided-review ~/.local/share/guided-review
+mkdir -p ~/.codex/skills
+ln -sfn ~/.local/share/guided-review/skills/guided-review ~/.codex/skills/guided-review
+ln -sfn ~/.local/share/guided-review/skills/guided-selfreview ~/.codex/skills/guided-selfreview</code></pre>
+      <dl>
+        <dt>Update</dt><dd><pre><code>go install github.com/pltanton/guided-review/cmd/gr@latest
+git -C ~/.local/share/guided-review pull</code></pre></dd>
+        <dt>Remove</dt><dd><pre><code>rm -f ~/.codex/skills/guided-review ~/.codex/skills/guided-selfreview
+rm -rf ~/.local/share/guided-review
+rm -f "$(go env GOPATH)/bin/gr"</code></pre></dd>
+      </dl>
+    </div>
+
+    <div class="run">
+      <span>Then, in tmux inside the repository</span>
+      <pre><code>/guided-review https://gitlab.example.com/group/project/-/merge_requests/123</code></pre>
+      <p class="hint">Removing the tool keeps your review history in <code>.git/guided-review/</code>; <a href="https://github.com/pltanton/guided-review/blob/main/INSTALL.md#uninstalling">INSTALL.md</a> lists what is left and how to clear it.</p>
     </div>
   </div>
 </section>
