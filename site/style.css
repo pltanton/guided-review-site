@@ -131,6 +131,7 @@ h1 em { font: italic 400 1.14em/1 var(--serif); letter-spacing: -.01em; color: v
 .two h3 { margin-top: 0; }
 .two.later { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
 .install a { color: var(--accent); }
+.install p.then { margin: 16px 0 10px; }
 pre { margin: 0; padding: 18px 20px; font-size: 14px; line-height: 1.7; color: #e5e7eb; background: var(--term); border-radius: 12px; white-space: pre-wrap; overflow-wrap: anywhere; user-select: all; box-shadow: var(--shadow); }
 pre.ap-term-text { user-select: text; cursor: text; }
 

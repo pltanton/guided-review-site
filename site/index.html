@@ -17,7 +17,7 @@
 <meta name="twitter:image" content="https://guided-review.pltanton.dev/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314161f'/%3E%3Cpath d='M10 7v18M10 8h11l-3 4 3 4H10' stroke='%23FCD34D' stroke-width='2.4' fill='none' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.css">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 <script>try { const t = localStorage.theme; if (t) document.documentElement.dataset.theme = t; } catch {}</script>
 <script defer src="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.min.js"></script>
 <script defer src="app.js?v=3"></script>
@@ -130,13 +130,22 @@ claude plugin install guided-review@guided-review</pre>
   <div class="two later">
     <div>
       <h3>Update</h3>
-      <p>Ask your agent the same way, or by hand (<a href="https://github.com/pltanton/guided-review/blob/main/INSTALL.md#updating">details</a>):</p>
+      <p>Ask your agent:</p>
       <pre>Update guided-review following its INSTALL.md</pre>
+      <p class="then">or by hand:</p>
+      <pre>go install github.com/pltanton/guided-review/cmd/gr@latest
+claude plugin marketplace update guided-review
+claude plugin update guided-review@guided-review</pre>
     </div>
     <div>
       <h3>Uninstall</h3>
-      <p>Removes the plugin, the skills and <code>gr</code>; review history stays until you say so (<a href="https://github.com/pltanton/guided-review/blob/main/INSTALL.md#uninstalling">details</a>):</p>
+      <p>Ask your agent:</p>
       <pre>Uninstall guided-review following its INSTALL.md</pre>
+      <p class="then">or by hand:</p>
+      <pre>claude plugin uninstall guided-review@guided-review
+claude plugin marketplace remove guided-review
+rm -f "$(go env GOPATH)/bin/gr"</pre>
+      <p class="then">Review history stays in <code>.git/guided-review/</code> of each repository; delete it if you no longer need it (<a href="https://github.com/pltanton/guided-review/blob/main/INSTALL.md#uninstalling">what else gr leaves</a>).</p>
     </div>
   </div>
 </section>
