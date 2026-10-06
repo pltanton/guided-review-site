@@ -171,3 +171,14 @@ for (const figure of document.querySelectorAll(".zoom")) {
     big = attach(dialog.querySelector("figure"), { autoPlay: true, loop: true });
   });
 }
+
+fetch("https://api.github.com/repos/pltanton/guided-review")
+  .then((r) => (r.ok ? r.json() : null))
+  .then((repo) => {
+    const n = repo?.stargazers_count;
+    if (!n) return;
+    const count = document.querySelector(".star .count");
+    count.textContent = n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n;
+    count.hidden = false;
+  })
+  .catch(() => {});

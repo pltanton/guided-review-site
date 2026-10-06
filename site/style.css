@@ -48,6 +48,10 @@ header {
 nav { display: flex; align-items: center; gap: 28px; font-size: 15px; }
 nav a { text-decoration: none; color: var(--muted); }
 nav a:hover, nav a:last-of-type { color: var(--ink); }
+.star { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink) !important; font-size: 14px; }
+.star svg { color: var(--accent); }
+.star:hover { border-color: var(--muted); }
+.star .count { margin-left: 2px; padding-left: 8px; border-left: 1px solid var(--line); color: var(--muted); font-variant-numeric: tabular-nums; }
 .theme { display: grid; place-items: center; width: 30px; height: 30px; margin-left: -8px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: none; color: var(--muted); cursor: pointer; }
 .theme:hover { color: var(--ink); border-color: var(--muted); }
 
