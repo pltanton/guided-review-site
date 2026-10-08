@@ -118,6 +118,7 @@
       <button type="button" role="tab" class="on" data-tab="agent">Ask your agent</button>
       <button type="button" role="tab" data-tab="claude">Claude Code</button>
       <button type="button" role="tab" data-tab="codex">Codex</button>
+      <button type="button" role="tab" data-tab="nix">Nix</button>
     </div>
 
     <div class="pane on" data-pane="agent">
@@ -155,6 +156,28 @@ git -C ~/.local/share/guided-review pull</code></pre></dd>
         <dt>Remove</dt><dd><pre><code>rm -f ~/.codex/skills/guided-review ~/.codex/skills/guided-selfreview
 rm -rf ~/.local/share/guided-review
 rm -f "$(go env GOPATH)/bin/gr"</code></pre></dd>
+      </dl>
+    </div>
+
+    <div class="pane" data-pane="nix">
+      <pre><code>nix profile install github:pltanton/guided-review</code></pre>
+      <p class="hint">Puts <code>gr</code> on PATH without Go; the skills come from the Claude Code plugin or the Codex steps. With home-manager, the module does both:</p>
+      <pre><code>inputs.guided-review = {
+  url = "github:pltanton/guided-review";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
+
+imports = [ inputs.guided-review.homeModules.default ];
+programs.guided-review = {
+  enable = true;
+  claude.enable = true;   # skills in ~/.claude/skills
+  codex.enable = true;    # skills in ~/.codex/skills
+};</code></pre>
+      <dl>
+        <dt>Update</dt><dd><pre><code>nix profile upgrade guided-review
+# home-manager: nix flake update guided-review, then switch</code></pre></dd>
+        <dt>Remove</dt><dd><pre><code>nix profile remove guided-review
+# home-manager: drop the module and switch</code></pre></dd>
       </dl>
     </div>
 
