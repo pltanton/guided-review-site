@@ -15,6 +15,17 @@ export COLORTERM=truecolor TERM_PROGRAM=tmux LANG=${LANG:-en_US.UTF-8} TERM=${TE
 mkdir -p "$HOME"
 cd "$WORK/ledger"
 
+# Off camera: the viewer shows what's new once per version; mark it seen.
+seen_news() {
+  local v dir
+  v=$(gr version 2>/dev/null | awk '{print $2}') || return 0
+  [[ -n $v ]] || return 0
+  for dir in "$XDG_CACHE_HOME" "$HOME/Library/Caches"; do
+    mkdir -p "$dir/guided-review" && echo "$v" >"$dir/guided-review/seen-version"
+  done
+}
+seen_news
+
 t() { tmux -u -L "$SOCK" -f /dev/null "$@"; }
 listener=""
 recorder=""
