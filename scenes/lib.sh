@@ -54,6 +54,7 @@ skip_intro() {
     sleep 0.3
     screen | grep -q 'I reopens' && { t send-keys -t demo Enter; sleep 0.3; return 0; }
   done
+  return 0
 }
 
 record() {
