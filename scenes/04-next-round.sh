@@ -19,6 +19,8 @@ say "Threads: race and rounding fixed, I suggest resolving. Migration not fixed,
 Press R to decide."
 pause 4
 snap round2
+skip_intro
+pause 1
 key R
 pause 4
 key a
