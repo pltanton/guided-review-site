@@ -45,7 +45,7 @@
     <p class="cta"><a class="btn primary" href="#install">Install</a> <a class="btn" href="https://github.com/pltanton/guided-review">GitHub</a></p>
     <ul class="facts">
       <li><b>Chapters by behaviour</b>, not by file
-      <li><b>⚑ hotspots</b> where a mistake is expensive
+      <li><b>⚑ risks</b> you check off before moving on
       <li><b>Every step</b> needs your “next” or a reason to skip
     </ul>
   </div>
@@ -58,17 +58,17 @@
     <div>
       <small>01</small>
       <h2>Say it in your own words</h2>
-      <p>Point at a line and write what bothers you, the way you would say it to a colleague. The agent turns it into a review comment with a severity and, when the fix is obvious, a suggestion. A message can take several lines; the line under the input always shows what it will be and which keys apply. When the agent needs a decision, it offers answers you pick with one key.</p>
+      <p>Press Enter on a line and a box opens right under it. Write the comment yourself, add a suggestion with the code already filled in, or press Tab and just say what bothers you: the agent turns it into a review comment with a severity. When the agent needs a decision, it offers answers you pick with one key.</p>
     </div>
-    <figure class="term zoom"><figcaption><span>c on a line · alt+enter new line · alt+1 to answer</span></figcaption><div data-cast="casts/02-conversation.cast"></div></figure>
+    <figure class="term zoom"><figcaption><span>enter on a line · tab ai comment · C-j new line · 1 to answer</span></figcaption><div data-cast="casts/02-conversation.cast"></div></figure>
   </article>
   <article class="row">
     <div>
       <small>02</small>
       <h2>No rubber stamp</h2>
-      <p>A step counts as reviewed only when you move past it or skip it with a reason. The viewer tracks which changed lines you actually scrolled past and reminds you once about the rest, or about a hotspot nobody discussed.</p>
+      <p>A step counts as reviewed only when you move past it or skip it with a reason. Every ⚑ risk stays open until you check it off or comment on its line. Move on with a risk still open, or with changed lines you never scrolled past, and the viewer lists them first.</p>
     </div>
-    <figure class="term zoom"><figcaption><span>&gt; next · A ask · c comment</span></figcaption><div data-cast="casts/03-no-rubber-stamp.cast"></div></figure>
+    <figure class="term zoom"><figcaption><span>&gt; next · x check off · a ask · enter comment</span></figcaption><div data-cast="casts/03-no-rubber-stamp.cast"></div></figure>
   </article>
   <article class="row">
     <div>
@@ -82,9 +82,9 @@
     <div>
       <small>04</small>
       <h2>Nothing is posted before you see it</h2>
-      <p>At the end you see every inline comment and the summary exactly as they will be posted. Edit, delete, change a severity, switch the verdict. Only after your yes does the agent publish: GitLab draft notes in one batch, or one GitHub review.</p>
+      <p>At the end the viewer proposes a verdict from your comments, lists what you skipped and which risks you checked, and asks whether to approve. You see every inline comment and the summary exactly as they will be posted; change a severity and the verdict follows. Then publish with one key, GitLab draft notes in one batch or one GitHub review, or hand it to the agent.</p>
     </div>
-    <figure class="term zoom"><figcaption><span>P finish · v verdict · s severity · E edit · DD delete</span></figcaption><div data-cast="casts/05-finish.cast"></div></figure>
+    <figure class="term zoom"><figcaption><span>P finish · s severity · v verdict · 1 publish</span></figcaption><div data-cast="casts/05-finish.cast"></div></figure>
   </article>
 </section>
 
@@ -95,16 +95,16 @@
     <div class="tabs">
       <input type="radio" name="deep" id="d1" checked>
       <label for="d1"><b>Details behind every note</b>
-        <span><kbd>i</kbd> on a note or ⚑ opens the explanation the agent wrote while planning: the problem, when it bites, what to do, with the code it mentions shown underneath. <kbd>1</kbd>–<kbd>9</kbd> opens that code; <kbd>A</kbd> on a line asks for more.</span></label>
+        <span><kbd>enter</kbd> on a note or ⚑ opens the explanation the agent wrote while planning: the problem, when it bites, what to do, with the code it mentions shown underneath. <kbd>1</kbd>–<kbd>9</kbd> opens that code, <kbd>c</kbd> discusses it with the agent, <kbd>a</kbd> on a line asks for more.</span></label>
       <input type="radio" name="deep" id="d2">
       <label for="d2"><b>A language server in the diff</b>
-        <span>FLOW lists who calls the functions this step changed and what they call. On any symbol: <kbd>K</kbd> type and docs, <kbd>gd</kbd> definition, <kbd>gr</kbd> references, <kbd>gi</kbd> implementations, <kbd>gc</kbd> callers — and you keep going from inside a peek.</span></label>
+        <span>FLOW lists who calls the functions this step changed and what they call. On any symbol: <kbd>K</kbd> type and docs, <kbd>gd</kbd> definition, <kbd>gr</kbd> references, <kbd>gi</kbd> implementations, <kbd>gc</kbd> callers. Results open over the code, <kbd>/</kbd> filters them, and you keep going from inside a peek.</span></label>
       <input type="radio" name="deep" id="d3">
       <label for="d3"><b>A diff that reads like code</b>
         <span>Moved code is marked <b>↕</b> instead of shown twice. Large deletions fold away until you press <kbd>o</kbd>. Only the words that changed inside a line are coloured. <kbd>s</kbd> flips between unified and split.</span></label>
     </div>
     <div class="slides">
-      <figure class="term"><figcaption><span>i details · 1–9 open code · A explain</span><span class="pager"><label for="d3">‹</label>1 / 3<label for="d2">›</label></span></figcaption><div data-cast="casts/06-details.cast"></div></figure>
+      <figure class="term"><figcaption><span>enter details · 1–9 open code · a explain</span><span class="pager"><label for="d3">‹</label>1 / 3<label for="d2">›</label></span></figcaption><div data-cast="casts/06-details.cast"></div></figure>
       <figure class="term"><figcaption><span>K hover · gd definition · gc callers</span><span class="pager"><label for="d1">‹</label>2 / 3<label for="d3">›</label></span></figcaption><div data-cast="casts/07-lsp.cast"></div></figure>
       <figure class="term"><figcaption><span>↕ moved · o unfold · s split</span><span class="pager"><label for="d2">‹</label>3 / 3<label for="d1">›</label></span></figcaption><div data-cast="casts/08-diff.cast"></div></figure>
     </div>

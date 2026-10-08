@@ -44,6 +44,16 @@ viewer() {
   t set -g status off
   t set -g escape-time 0
   t set -as terminal-features ",*:RGB"
+  skip_intro
+}
+
+# Off camera: a scene that opens mid-plan starts with the chapter intro card; close it.
+skip_intro() {
+  local i
+  for ((i = 0; i < 10; i++)); do
+    sleep 0.3
+    screen | grep -q 'I reopens' && { t send-keys -t demo Enter; sleep 0.3; return 0; }
+  done
 }
 
 record() {

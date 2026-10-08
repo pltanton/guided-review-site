@@ -19,7 +19,9 @@ pause 2.5
 snap scrolled
 key W
 pause 1.5
-key c
+key Enter
+pause 0.8
+key Tab
 typing "the log line prints the database url, password included"
 key Enter
 heard >/dev/null

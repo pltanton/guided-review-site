@@ -10,9 +10,12 @@ key /
 typing "int64(body"
 key Enter Escape
 pause 1.5
-key c
+key Enter
+pause 1
+key Tab
+pause 0.8
 typing "this truncates, 19.99 comes out as 1998 cents."
-key M-Enter
+key C-j
 typing "round it instead"
 pause 1.2
 snap compose
@@ -29,7 +32,7 @@ say --option "yes, major" --option "no, fine as is" \
 Line 51 sends database errors back as 400 with their text. Comment on that too?"
 pause 3
 snap options
-key M-1
+key 1
 heard >/dev/null
 thinking "writing the comment" 1.5
 gr comment add --file internal/api/handler.go --lines 50-51 --severity major \

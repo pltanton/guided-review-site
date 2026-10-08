@@ -22,8 +22,8 @@ key Escape
 pause 1
 key n
 pause 1
-key A
-pause 0.5
+key a
+pause 0.8
 key Enter
 listen message
 pause 0.5

@@ -7,18 +7,21 @@ thinking "reading the diff: 11 files, +216 −117" 2.5
 thinking "planning: 3 chapters, 7 steps" 2.5
 gr plan set -f "$SCENES/plan.yaml" >/dev/null
 listen
-snap planned
 pause 4
+snap chapter
+key Enter
+pause 2
+snap planned
 key n
 pause 1.5
-key i
+key Enter
 pause 5
 snap detail
 key Escape
 pause 1
 key n
 pause 2
-key i
+key Enter
 pause 3
 snap note
 key Escape

@@ -22,13 +22,11 @@ for s in s1 s2 s3 s4 s5 s6 s7; do gr step goto "$s" >/dev/null; gr step next >/d
 viewer
 listen finished
 record
-thinking "checking the gate: 7/7 steps, 3/3 hotspots discussed" 2.5
-gr prepare --verdict changes \
-  --decisions "Limits must hold under concurrent transfers; amounts are rounded, never truncated." >/dev/null
-say "Every step is reviewed. Verdict: changes requested, 1 blocker, 3 major, 1 minor.
-Press P to see exactly what goes to the PR."
-pause 3.5
+pause 2.5
 key P
+pause 4
+snap card
+key Enter
 pause 3.5
 snap preview
 key j j j j
@@ -45,5 +43,8 @@ key v
 pause 2.5
 snap verdict-back
 key P
+pause 3
+snap publish
+key 2
 heard >/dev/null
 stop 0.2
