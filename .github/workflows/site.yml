@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: "guided-review ref to record (default: latest tag, else main)"
+        description: "guided-review ref to record (default: main)"
         required: false
   repository_dispatch:
     types: [gr-release]
@@ -34,12 +34,10 @@ jobs:
         env:
           WANTED: ${{ github.event.client_payload.ref || inputs.ref }}
         run: |
-          ref=$WANTED
-          if [[ -z $ref ]]; then
-            ref=$(git ls-remote --tags --sort=-v:refname https://github.com/pltanton/guided-review 'v*' \
-              | grep -v '\^{}' | head -1 | sed 's|.*refs/tags/||')
-          fi
-          echo "ref=${ref:-main}" >>"$GITHUB_OUTPUT"
+          # a release dispatch names its ref; a push of the site records against gr main, since
+          # the scenes track main and the last tag may not parse them
+          ref=${WANTED:-main}
+          echo "ref=$ref" >>"$GITHUB_OUTPUT"
           echo "recording guided-review ${ref:-main}"
 
       - uses: actions/checkout@v4
