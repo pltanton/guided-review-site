@@ -1,11 +1,12 @@
 source "$(dirname "$0")/lib.sh"
 
 review_ready
-gr step goto s5 >/dev/null
 viewer
 listen message
 record
-pause 2.5
+pause 2
+goto_file handler.go
+pause 1.5
 key /
 typing "int64(body"
 key Enter Escape
@@ -40,7 +41,7 @@ gr comment add --file internal/api/handler.go --lines 50-51 --severity major \
 A lock timeout becomes a client error and leaks table names.
 Keep 400 for validation errors, return 500 with a generic text for the rest." >/dev/null
 listen message
-say "recorded: major, handler.go:50–51. Two comments on this step."
+say "recorded: major, handler.go:50–51. Two comments on this file."
 pause 1.5
 key C-d
 pause 3.5

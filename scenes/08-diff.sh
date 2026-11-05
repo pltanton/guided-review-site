@@ -1,17 +1,15 @@
 source "$(dirname "$0")/lib.sh"
 
 review_ready
-gr step goto s7 >/dev/null
 viewer
 listen message
-lsp_ready
 record
-pause 3
+pause 2
+goto_file validate.go
+pause 1.5
 key '}'
 pause 1.5
 snap moved-fold
-key '}'
-pause 0.6
 key j
 pause 0.6
 key o

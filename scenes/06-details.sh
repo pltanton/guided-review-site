@@ -1,11 +1,12 @@
 source "$(dirname "$0")/lib.sh"
 
 review_ready
-gr step goto s4 >/dev/null
 viewer
 listen message
 record
-pause 2.5
+pause 2
+goto_file service.go
+pause 1.5
 key n
 pause 1.5
 key i

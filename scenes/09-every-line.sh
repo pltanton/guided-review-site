@@ -1,11 +1,12 @@
 source "$(dirname "$0")/lib.sh"
 
 review_ready
-gr step goto s7 >/dev/null
 viewer
 listen message
 record
-pause 2.5
+pause 2
+goto_file main.go
+pause 1
 key /
 typing "database at"
 key Enter Escape

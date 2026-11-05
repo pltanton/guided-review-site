@@ -16,25 +16,23 @@ gr thread assess PRRT_migration --propose open \
   "Not fixed: the migration is unchanged. The table size does not matter; Postgres rejects NOT NULL without a default as soon as there is one row." >/dev/null
 gr plan set -f "$SCENES/plan-round2.yaml" >/dev/null
 say "Threads: race and rounding fixed, I suggest resolving. Migration not fixed, I suggest keeping it open with a reply.
-Press R to decide."
+n walks them, enter decides."
 pause 4
 snap round2
-skip_intro
-pause 1
-key R
-pause 4
-key a
-pause 1.2
-key j
-pause 0.8
-key a
-pause 1.2
-key j
+key n
+pause 2.5
+key Enter
+pause 3
+snap thread-card
+key 3
+pause 2
+key Enter
 pause 1.5
-key a
-pause 2.5
+key 3
+pause 2
+key Enter
+pause 1.5
+key 3
+pause 3
 snap decided
-key Escape
-pause 2.5
-snap back
 stop 1

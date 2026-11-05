@@ -1,0 +1,14 @@
+briefing: |-
+  Cap how much an account can send per day: a daily_limit column, a running total per day, a check before the debit.
+  POST /transfers → Service.Transfer → limits.Check → Debit/Credit/AddSpent. A transfer over the limit gets 422.
+  Watch: the check and the debit are not in one transaction; amounts arrive as floats.
+files:
+  - { path: migrations/002_daily_limits.sql, order: 1, why: "daily_limit on accounts, a totals table per day" }
+  - { path: internal/store/store.go, order: 2, why: "SpentToday and AddSpent, the upsert in the transfer's tx" }
+  - { path: internal/limits/limits.go, order: 3, why: "the rule: 0 is no limit, reaching it is allowed" }
+  - { path: internal/transfer/service.go, order: 4, why: "Transfer checks the limit, then debits; retry on 40001" }
+  - { path: internal/api/handler.go, order: 5, why: "euros in, cents inside; the new error maps to 422" }
+  - { path: internal/config/config.go, order: 6, why: "LEDGER_TRANSFER_RETRIES, default 3" }
+  - { path: internal/transfer/validate.go, order: 7, why: "validateTransfer moved here from the handler" }
+  - { path: internal/legacy/fees.go, order: 8, why: "removed: fees live in billing now" }
+  - { path: cmd/ledger/main.go, order: 9, why: "wiring for the limits checker" }

@@ -1,18 +1,19 @@
 source "$(dirname "$0")/lib.sh"
 
 review_ready
-gr step goto s4 >/dev/null
 viewer
 listen message
-lsp_ready
 record
-pause 3.5
-snap flow
-geometry
+pause 2
+goto_file service.go
+pause 0.5
 key /
 typing "Validate"
 key Enter Escape
-pause 0.6
+lsp_ready
+pause 2.5
+snap here
+geometry
 key w w
 pause 0.8
 key K
@@ -21,12 +22,10 @@ snap hover
 key Escape
 pause 0.6
 key g d
-pause 2.5
-snap definition
-key w
-pause 0.6
-key g c
 pause 3
+snap definition
+key g c
+pause 6
 snap callers
 key Enter
 pause 3

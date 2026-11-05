@@ -18,7 +18,7 @@ gr comment add --file internal/api/handler.go --lines 50-51 --severity major \
 Keep 400 for validation errors, return 500 with a generic text for the rest." >/dev/null
 gr comment add --file internal/transfer/service.go --lines 60 --severity minor \
   "Backoff is linear with no jitter: retries of a hot account collide again." >/dev/null
-for s in s1 s2 s3 s4 s5 s6 s7; do gr step goto "$s" >/dev/null; gr step next >/dev/null 2>&1 || true; done
+seen_all
 viewer
 listen finished
 record

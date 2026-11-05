@@ -42,10 +42,27 @@ trap cleanup EXIT
 
 pause() { sleep "$1"; }
 
-# Off camera: what the agent did before the human looks — init and the plan.
+# Off camera: what the agent did before the human looks — init and its reading, in two parts.
 review_ready() {
   gr init --id demo-ledger "$PR" >/dev/null
-  gr plan set -f "$SCENES/plan.yaml" >/dev/null
+  gr plan set -f "$SCENES/plan-files.yaml" >/dev/null
+  gr plan set -f "$SCENES/plan-notes.yaml" >/dev/null
+}
+
+# Off camera: what the viewer records once every changed line was on screen.
+seen_all() {
+  local f
+  f=$(git rev-parse --git-common-dir)/guided-review/demo-ledger/state.yaml
+  awk '{print} /^      tier: core$/{print "      seen: true"}' "$f" >"$f.tmp" && mv "$f.tmp" "$f"
+}
+
+# The human jumps to a file through the command line.
+goto_file() {
+  t send-keys -t demo ':'
+  sleep 0.3
+  typing "f $1"
+  t send-keys -t demo Enter
+  sleep 0.8
 }
 
 viewer() {
@@ -55,17 +72,7 @@ viewer() {
   t set -g status off
   t set -g escape-time 0
   t set -as terminal-features ",*:RGB"
-  skip_intro
-}
-
-# Off camera: a scene that opens mid-plan starts with the chapter intro card; close it.
-skip_intro() {
-  local i
-  for ((i = 0; i < 10; i++)); do
-    sleep 0.3
-    screen | grep -q 'I reopens' && { t send-keys -t demo Enter; sleep 0.3; return 0; }
-  done
-  return 0
+  sleep 1
 }
 
 record() {
@@ -115,11 +122,11 @@ say() { gr say "$@"; }
 
 screen() { t capture-pane -p -t demo; }
 snap() { [[ -n ${SNAP:-} ]] && { echo "--- $1"; screen; } >&2 || true; }
-# Blocks until the language server answered: FLOW shows up once gopls has indexed the step.
+# Blocks until the language server answered: the HERE panel shows up once gopls has indexed the file.
 lsp_ready() {
   local i
   for ((i = 0; i < 120; i++)); do
-    screen | grep -q ' FLOW ' && return 0
+    screen | grep -q ' HERE \| ← ' && return 0
     sleep 0.5
   done
   echo "gopls did not answer" >&2
@@ -135,8 +142,7 @@ round1_published() {
     "\`int64(body.Amount * 100)\` truncates the float instead of rounding it." >/dev/null
   gr comment add --file migrations/002_daily_limits.sql --lines 1 --severity major \
     "\`NOT NULL\` without a default fails on a table that already has rows." >/dev/null
-  local s
-  for s in s1 s2 s3 s4 s5 s6 s7; do gr step goto "$s" >/dev/null; gr step next >/dev/null 2>&1 || true; done
+  seen_all
   gr prepare --verdict changes --decisions "Limits must hold under concurrent transfers." >/dev/null
   gr export >/dev/null
   gr mark-published >/dev/null

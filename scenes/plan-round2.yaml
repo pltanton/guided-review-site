@@ -1,26 +1,9 @@
-summary: "Round 2: the limit check moves into the transaction, amounts are rounded"
-steps:
-  - id: s1
-    chapter: "Fixes after review"
-    intro: |-
-      Kai answered all three threads and pushed one commit.
-      Two fixes are in the code; the migration is unchanged.
-    title: "The limit is checked inside the transaction, under a row lock"
-    kind: logic
-    message: |-
-      s1/2 · Check moved into InTx, SpentToday locks the account row
-      The check now runs on tx, so a second transfer waits for the first to commit.
-    hunks:
-      - { file: internal/transfer/service.go }
-      - { file: internal/store/store.go }
-      - { file: internal/limits/limits.go }
-      - { file: internal/limits/limits_test.go }
-      - { file: cmd/ledger/main.go }
-  - id: s2
-    chapter: "Fixes after review"
-    title: "Amounts are rounded to the nearest cent"
-    kind: contract
-    message: |-
-      s2/2 · handler: math.Round on the way to cents
-      19.99 now becomes 1999.
-    hunks: [{ file: internal/api/handler.go }]
+briefing: |-
+  Round 2: Kai answered all three threads and pushed one commit.
+  The limit check moved into the transaction under a row lock, amounts are rounded; the migration is unchanged.
+files:
+  - { path: internal/transfer/service.go, order: 1, why: "Check runs on tx; a second transfer waits for the first" }
+  - { path: internal/store/store.go, order: 2, why: "SpentToday locks the account row" }
+  - { path: internal/limits/limits.go, order: 3, why: "Check takes the tx" }
+  - { path: internal/api/handler.go, order: 4, why: "math.Round on the way to cents: 19.99 → 1999" }
+  - { path: cmd/ledger/main.go, order: 5, why: "wiring" }

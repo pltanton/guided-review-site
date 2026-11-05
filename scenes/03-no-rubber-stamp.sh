@@ -1,19 +1,19 @@
 source "$(dirname "$0")/lib.sh"
 
 review_ready
-gr step goto s4 >/dev/null
 viewer
 listen ask
-lsp_ready
 record
-pause 3
-key '>'
-pause 3.5
-snap hotspot-reminder
+pause 2
+goto_file service.go
+pause 1.5
+key P
+pause 4
+snap finish-card
 key Escape
 pause 1
 key n
-pause 1
+pause 1.5
 key a
 typing "can two transfers get past this check at the same time?"
 key Enter
@@ -39,15 +39,13 @@ gr comment add --file internal/transfer/service.go --lines 32 --severity blocker
 Two transfers of 600 against a limit of 1000 send 1200.
 Read the total inside \`InTx\` with \`FOR UPDATE\` on the account row." >/dev/null
 listen message
-say "recorded: blocker, service.go:32."
-pause 1.5
+say "recorded: blocker, service.go:32. That checks the risk off."
+pause 2
 key C-d
 pause 3
 snap commented
-key '>'
-pause 3
-snap gate
-key 2
-pause 3
-snap s5
+key P
+pause 4
+snap finish-card-again
+key Escape
 stop 1

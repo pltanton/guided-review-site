@@ -3,9 +3,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>guided-review</title>
-<meta name="description" content="An agent reads the merge request first and walks you through it in small steps. You judge the code; it writes the comments and posts them when you say so.">
+<meta name="description" content="The whole merge request in a terminal viewer, with an agent reading next to you: a reading order, flags on the risky lines, notes on the tricky ones. You judge the code; it writes the comments and posts them when you say so.">
 <meta property="og:title" content="guided-review — keep the human review, lose the grind">
-<meta property="og:description" content="An agent plans the route through a merge request and walks you through it in a terminal viewer. Claude Code or Codex, GitLab or GitHub.">
+<meta property="og:description" content="An agent reads the merge request next to you in a terminal viewer: a reading order, flags on the risky lines, notes on the tricky ones. Claude Code or Codex, GitLab or GitHub.">
 <meta property="og:url" content="https://guided-review.pltanton.dev/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="guided-review">
@@ -41,12 +41,12 @@
   <div>
     <p class="eyebrow">Claude Code or Codex · GitLab or GitHub · tmux</p>
     <h1>Keep the human review. <span>Lose the <em>grind.</em></span></h1>
-    <p class="lede">Agents write code faster than people can review it. Here the agent reads the merge request first, cuts it into small steps in a sensible order and walks you through them. You decide what is wrong; it writes the comments and posts them when you say so.</p>
+    <p class="lede">Agents write code faster than people can review it. Here you open the whole merge request at once, and the agent reads it next to you: it numbers the files in a sensible order, flags the lines where a mistake is expensive and explains the tricky ones. You decide what is wrong; it writes the comments and posts them when you say so.</p>
     <p class="cta"><a class="btn primary" href="#install">Install</a> <a class="btn" href="https://github.com/pltanton/guided-review">GitHub</a></p>
     <ul class="facts">
-      <li><b>Chapters by behaviour</b>, not by file
-      <li><b>⚑ risks</b> you check off before moving on
-      <li><b>Every step</b> needs your “next” or a reason to skip
+      <li><b>A reading order</b> by behaviour, not by path
+      <li><b>⚑ risks</b> on the lines, with the reasoning one key away
+      <li><b>Nothing waits for the agent</b>: you read while it reads
     </ul>
   </div>
   <figure class="term"><figcaption><span>gr view · PR #42 Daily transfer limits per account</span></figcaption><div data-cast="casts/01-plan.cast"></div></figure>
@@ -66,23 +66,23 @@
     <div>
       <small>02</small>
       <h2>No rubber stamp</h2>
-      <p>A step counts as reviewed only when you move past it or skip it with a reason. Every ⚑ risk stays open until you check it off or comment on its line. Move on with a risk still open, or with changed lines you never scrolled past, and the viewer lists them first.</p>
+      <p>The tree marks every file with changes you have not scrolled past. Every ⚑ risk stays open until you check it off or comment on its line. Press finish with a risk still open, or with files you never read, and the card lists them first; the summary posted to the merge request says so too.</p>
     </div>
-    <figure class="term zoom"><figcaption><span>&gt; next · x check off · a ask · enter comment</span></figcaption><div data-cast="casts/03-no-rubber-stamp.cast"></div></figure>
+    <figure class="term zoom"><figcaption><span>P finish · x check off · a ask · enter comment</span></figcaption><div data-cast="casts/03-no-rubber-stamp.cast"></div></figure>
   </article>
   <article class="row">
     <div>
       <small>03</small>
       <h2>Round two starts where you left off</h2>
-      <p>After the author pushes, you see only what changed since your last round. Your open threads come first, with the author's replies. The agent checks each reply against the new code and suggests resolve or keep open. You decide.</p>
+      <p>After the author pushes, you see only what changed since your last round, plus what you did not read. Your open threads sit on their lines with the author's replies. The agent checks each reply against the new code and suggests resolve or keep open. You decide.</p>
     </div>
-    <figure class="term zoom"><figcaption><span>R replies · a take the agent's suggestion</span></figcaption><div data-cast="casts/04-next-round.cast"></div></figure>
+    <figure class="term zoom"><figcaption><span>n next thread · enter decide · 3 as the agent suggests</span></figcaption><div data-cast="casts/04-next-round.cast"></div></figure>
   </article>
   <article class="row">
     <div>
       <small>04</small>
       <h2>Nothing is posted before you see it</h2>
-      <p>At the end the viewer proposes a verdict from your comments, lists what you skipped and which risks you checked, and asks whether to approve. You see every inline comment and the summary exactly as they will be posted; change a severity and the verdict follows. Then publish with one key, GitLab draft notes in one batch or one GitHub review, or hand it to the agent.</p>
+      <p>At the end the viewer proposes a verdict from your comments, lists what you did not read and which risks you checked, and asks whether to approve. You see every inline comment and the summary exactly as they will be posted; change a severity and the verdict follows. Then publish with one key, GitLab draft notes in one batch or one GitHub review, or hand it to the agent.</p>
     </div>
     <figure class="term zoom"><figcaption><span>P finish · s severity · v verdict · 1 publish</span></figcaption><div data-cast="casts/05-finish.cast"></div></figure>
   </article>
@@ -95,17 +95,17 @@
     <div class="tabs">
       <input type="radio" name="deep" id="d1" checked>
       <label for="d1"><b>Details behind every note</b>
-        <span><kbd>enter</kbd> on a note or ⚑ opens the explanation the agent wrote while planning: the problem, when it bites, what to do, with the code it mentions shown underneath. <kbd>1</kbd>–<kbd>9</kbd> opens that code, <kbd>c</kbd> discusses it with the agent, <kbd>a</kbd> on a line asks for more.</span></label>
+        <span><kbd>enter</kbd> on a note or ⚑ opens the explanation the agent wrote while reading: the problem, when it bites, what to do, with the code it mentions shown underneath. <kbd>1</kbd>–<kbd>9</kbd> opens that code, <kbd>c</kbd> discusses it with the agent, <kbd>a</kbd> on a line asks for more.</span></label>
       <input type="radio" name="deep" id="d2">
       <label for="d2"><b>A language server in the diff</b>
-        <span>FLOW lists who calls the functions this step changed and what they call. On any symbol: <kbd>K</kbd> type and docs, <kbd>gd</kbd> definition, <kbd>gr</kbd> references, <kbd>gi</kbd> implementations, <kbd>gc</kbd> callers. Results open over the code, <kbd>/</kbd> filters them, and you keep going from inside a peek.</span></label>
+        <span>The line under the title follows the cursor: the function you are in and who calls it. On any symbol: <kbd>K</kbd> type and docs, <kbd>gd</kbd> definition, <kbd>gr</kbd> references, <kbd>gi</kbd> implementations, <kbd>gc</kbd> callers. Results open over the code, <kbd>/</kbd> filters them, and you keep going from inside a peek.</span></label>
       <input type="radio" name="deep" id="d3">
       <label for="d3"><b>A diff that reads like code</b>
         <span>Moved code is marked <b>↕</b> instead of shown twice. Large deletions fold away until you press <kbd>o</kbd>. Only the words that changed inside a line are coloured. <kbd>s</kbd> flips between unified and split.</span></label>
     </div>
     <div class="slides">
       <figure class="term"><figcaption><span>enter details · 1–9 open code · a explain</span><span class="pager"><label for="d3">‹</label>1 / 3<label for="d2">›</label></span></figcaption><div data-cast="casts/06-details.cast"></div></figure>
-      <figure class="term"><figcaption><span>K hover · gd definition · gc callers</span><span class="pager"><label for="d1">‹</label>2 / 3<label for="d3">›</label></span></figcaption><div data-cast="casts/07-lsp.cast"></div></figure>
+      <figure class="term"><figcaption><span>K hover · gd definition · gc callers · F whole file</span><span class="pager"><label for="d1">‹</label>2 / 3<label for="d3">›</label></span></figcaption><div data-cast="casts/07-lsp.cast"></div></figure>
       <figure class="term"><figcaption><span>↕ moved · o unfold · s split</span><span class="pager"><label for="d2">‹</label>3 / 3<label for="d1">›</label></span></figcaption><div data-cast="casts/08-diff.cast"></div></figure>
     </div>
   </div>
